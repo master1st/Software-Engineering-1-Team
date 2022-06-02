@@ -18,12 +18,18 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping("/login")
-    public UserEntity login (@RequestBody LoginAndSignupDto loginAndSignupDto, HttpServletRequest request) {
+    public HttpSession login (@RequestBody LoginAndSignupDto loginAndSignupDto, HttpServletRequest request) {
         UserEntity isLogin = loginService.login(loginAndSignupDto);
         HttpSession session = request.getSession();
-        if(isLogin!=null) //login success
-            session.setAttribute("userCode",isLogin.getUserCode());
-        return isLogin; //modifying null is need
+        System.out.println("ddd");
+        if(isLogin!=null) {//login success
+            session.setAttribute("user", isLogin.getUserCode());
+            System.out.println("here");
+        }
+        else {
+            session.setAttribute("user", "fail"); //modifying null is need
+            System.out.println("or");
+        }return session;
     }
 
     @PostMapping("/signup")
@@ -36,5 +42,13 @@ public class LoginController {
     public void logout ( HttpServletRequest request) {
         HttpSession session= request.getSession();
         session.invalidate();
+    }
+
+    @PostMapping("/deleteUser")
+    public void deleteUser (HttpServletRequest request) {
+        HttpSession session= request.getSession();
+        Long userCode = (Long) session.getAttribute("user");
+        session.invalidate();
+        loginService.deleteUser(userCode);
     }
 }
