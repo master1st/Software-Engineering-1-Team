@@ -12,6 +12,10 @@ public class LoginService {
 
     private final LoginRepository loginRepository;
 
+    public UserEntity getUser(Long userCode) {
+        return loginRepository.findById(userCode).orElse(null);
+    }
+
     public UserEntity login(LoginAndSignupDto loginAndSignupDto) {
         UserEntity userEntity = loginRepository.findById(loginAndSignupDto.getId());
         String realPassword = userEntity.getPassword();
