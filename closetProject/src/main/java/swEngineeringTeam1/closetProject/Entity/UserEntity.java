@@ -20,6 +20,8 @@ public class UserEntity {
 
     private String password;
 
+    private Long codyCount;
+
     @Builder
     public UserEntity (LoginAndSignupDto loginAndSignupDto) {
         this.id=loginAndSignupDto.getId();
