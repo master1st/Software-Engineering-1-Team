@@ -1,4 +1,5 @@
 package swEngineeringTeam1.closetProject.Entity;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,4 +27,13 @@ public class CodyEntity {
     private UserEntity userEntity;
 
     private String codyImage;
+
+    @Builder
+    public CodyEntity(UserEntity user, ClothesEntity clothesEntity, String codyImage, Long maxCodyNum) {
+        this.userEntity=user;
+        this.clothesEntity=clothesEntity;
+        this.codyImage=codyImage;
+        this.codyId= new CodyId(clothesEntity.getClothesId(), user.getUserCode(), maxCodyNum );
+    }
+
 }
