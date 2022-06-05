@@ -32,16 +32,15 @@ public class ClothesEntity {
     private String type;
     private String material;
 
-    private String clothesImage;
-
     public ClothesEntity (UserEntity user, ClothesDtoForCody clothesDtoForCody) {
-        this.user=user;
-        this.clothesId= clothesDtoForCody.getClothesId();
-        this.clothesImage= clothesDtoForCody.getClothesImage();
-        this.season= clothesDtoForCody.getSeason();
-        this.color= clothesDtoForCody.getColor();
-        this.type= clothesDtoForCody.getType();
-        this.material= clothesDtoForCody.getMaterial();
+        this.user = user;
+        this.clothesId = clothesDtoForCody.getClothesId();
+        this.clothesImage = clothesDtoForCody.getClothesImage();
+        this.season = clothesDtoForCody.getSeason();
+        this.color = clothesDtoForCody.getColor();
+        this.type = clothesDtoForCody.getType();
+        this.material = clothesDtoForCody.getMaterial();
+    }
 
 
     public ClothesEntity(UserEntity user,ClothesDto clothesDto){
