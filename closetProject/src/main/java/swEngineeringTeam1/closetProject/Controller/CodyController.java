@@ -16,6 +16,7 @@ import swEngineeringTeam1.closetProject.Service.CodyService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 
@@ -63,11 +64,12 @@ public class CodyController {
 //
 //    }
 
-    @DeleteMapping
-    public void deleteCody(HttpServletRequest request) {
+    @Transactional
+    @DeleteMapping("/mycody/{codyNum}")
+    public void deleteCody(HttpServletRequest request,@PathVariable Long codyNum) {
         HttpSession session= request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
-        codyService.deleteCody();
+        codyService.deleteCody(codyNum);
     }
 
 

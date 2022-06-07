@@ -67,7 +67,8 @@ public class CodyService {
 
     }
 
-    public void deleteCody() {
+    public void deleteCody(Long codyNum) {
+        codyRepository.deleteByCodyIdCodyNum(codyNum);
 
     }
 
