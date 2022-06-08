@@ -1,0 +1,58 @@
+.codyCreateBox{
+    display:flex;
+}
+
+
+.section_left_top_ul{
+    display:flex;
+    justify-content:space-between;
+}
+
+.section_center_top_ul{
+    display:flex;
+}
+
+li{
+    list-style-type:none;
+}
+
+button{
+    height: 50px;
+}
+
+.section_left{
+    width:700px;
+    
+}
+
+.mycody_img{
+    width:700px;
+    border:1px solid black;
+    height: auto;
+}
+.section_left_top_ul_div{
+    display:flex;
+}
+
+
+.new_reload{
+    width:100px;
+    margin-right: 10px;
+    background-color: white;
+}
+.go_back{
+    width:50px;
+    background-color: white;
+    margin-right: 10px;
+}
+.going_forward{
+    width:50px;
+    background-color: white;
+}
+.save{
+    width:90px;
+    background-color: #FF28A7	;
+}
+i{
+    font-size:23px;
+}

@@ -1,3 +1,5 @@
+@import "bourbon";
+
 .main_title {
     display: flex;
     font-size: 50px;
@@ -40,11 +42,14 @@
     border-radius: 15%;
 }
 
+.section_box2 {
+    display: flex;
+    justify-content: center;
+}
 .section_box {
     display: flex;
     justify-content: center;
 }
-
 .main_closet {
     margin: 0px 15px 0px 15px;
     width: 463px;
@@ -88,4 +93,24 @@
     color: black;
     bottom: 80px;
     position: fixed;
+}
+
+.weather_headbox{
+    display:flex;
+}
+.weather-container{
+    border: 1px solid black;
+    
+  font-family: 'HelveticaNeue-UltraLight', 'Helvetica Neue UltraLight', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  letter-spacing: 1px;
+  font-size: 24px;
+  color: black;
+  width: 300px;
+  border: 1px solid #3329AA;
+  box-shadow: 3px 3px 3px rgba(black, 0.3);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(lightCyan, skyBlue, deepSkyBlue);
+  margin : 0px;
 }
