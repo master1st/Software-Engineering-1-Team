@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/mycody.css">
+    <script src="../js/main.js"> </script>
+</head>
+
+<body>
+
+    <header>
+        <div class="main_title">
+            <strong><a class="cody_hyperlink" href="./main.html">MyCloset</a></strong>
+        </div>
+    </header>
+    <nav>
+        <ul class="nav_items">
+            <li class="item"><a class="cody_hyperlink" href="./mycloset.html">나의 옷장</a></li>
+            <li class="item"><a class="cody_hyperlink" href="./mycody.html">나의 코디</a></li>
+            <li class="item">로그인</li>
+        </ul>
+        <div class="br_tag_box">
+            <div class="br_tag"></div>
+        </div>
+    </nav>
+    <h1>
+        나의코디
+    </h1>
+    <div class="cody_container">
+        <div class="section_box">
+            <section class="mycody_1">
+                <img id="imagepopup" src="../img/코디1.png" onclick="showPopup(this.id)">
+                <img src="../img/코디2.png">
+                <img src="../img/코디3.png">
+                <img src="../img/코디1.png">
+                <img src="../img/코디1.png">
+            </section>
+        </div>
+        <div id="popup" class="hide">
+            <div class="content">
+                <div id="x"></div>
+                <p>
+                    여기에 팝업창 내용이 나타납니다.
+                </p>
+                <button onclick="closePopup(this.id)">닫기</button>
+            </div>
+        </div>
+        <div class="section_box">
+            <section class="mycody_2">
+                <img src="../img/코디1.png">
+                <img src="../img/코디2.png">
+                <img src="../img/코디3.png">
+                <img src="../img/코디1.png">
+                <img src="../img/코디1.png">
+            </section>
+        </div>
+        <div class="create_cody">
+            <img class="create_cody_img" src="../img/나의옷장생성/코디생성-removebg-preview.png">
+        </div>
+    </div>
+
+    <div class="br_tag_box">
+        <div class="br_tagb"></div>
+    </div>
+    <footer>
+        <ul class="footer_items">
+            <li class="f_item">회원탈퇴</li>
+            <li class="f_item">about</li>
+        </ul>
+    </footer>
+</body>
+
+</html>
