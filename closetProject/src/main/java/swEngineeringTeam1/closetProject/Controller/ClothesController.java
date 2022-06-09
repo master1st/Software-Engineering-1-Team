@@ -39,7 +39,7 @@ public class ClothesController {
         return clothesService.createClothes(clothesDto, userCode);
     }
 
-    @GetMapping("/")
+    @GetMapping("/read")
     public List<ClothesEntity> readClothes(@RequestParam ReadClothesDto readClothesDto, HttpServletRequest request){
         Long userCode = getUserCodeFromRequest(request);
         List<ClothesEntity> clothes = clothesService.readClothes(readClothesDto, userCode);
