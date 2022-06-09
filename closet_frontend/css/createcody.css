@@ -1,0 +1,69 @@
+.codyCreateBox{
+    display:flex;
+}
+
+
+.section_left_top_ul{
+    display:flex;
+    justify-content:space-between;
+}
+.section_center_top_ul{
+    display:flex;
+}
+
+.img_upload{
+    margin-top:16px;
+    margin-left: 550px;
+    margin-bottom:16px;
+    width:150px;
+    background-color:white;
+}
+li{
+    list-style-type:none;
+}
+
+button{
+    height: 50px;
+}
+.section_center_top{
+    margin-left:50px;
+}
+.section_left{
+    width:700px;
+    
+}
+.mycody_img{
+    width:665px;
+    height:780px;
+    border:1px solid black;
+    height: auto;
+}
+.section_left_top_ul_div{
+    display:flex;
+}
+
+
+.new_reload{
+    width:100px;
+    margin-right: 10px;
+    background-color: white;
+}
+.go_back{
+    width:50px;
+    background-color: white;
+    margin-right: 10px;
+}
+.going_forward{
+    width:50px;
+    background-color: white;
+}
+.save{
+    width:90px;
+    background-color: #FF28A7	;
+}
+i{
+    font-size:23px;
+}
+button{
+    cursor:pointer;
+}

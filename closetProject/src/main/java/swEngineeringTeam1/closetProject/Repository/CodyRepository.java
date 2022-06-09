@@ -16,4 +16,6 @@ public interface CodyRepository extends JpaRepository<CodyEntity, CodyId> {
      @Query(value = "SELECT MAX(CODYNUM) FROM cody", nativeQuery = true)
      Long findMaxCodyNum ();
 
+     void deleteByCodyIdCodyNum (Long codyNum);
+
 }

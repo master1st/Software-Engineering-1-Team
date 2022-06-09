@@ -1,0 +1,116 @@
+@import "bourbon";
+
+.main_title {
+    display: flex;
+    font-size: 50px;
+    justify-content: center;
+}
+
+.br_tag {
+    height: 1px;
+    box-shadow: 0px 0px 2px 0px gray;
+    font-size: 2px;
+    background-color: black;
+    color: black;
+}
+
+.br_tag_box {
+    height: 20px;
+}
+
+.nav_items {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    font-size: 23px;
+    padding: 20px 0px 0px 0px;
+    margin: 0px;
+}
+
+.cody_hyperlink {
+    text-decoration: none;
+    color: inherit;
+}
+
+.item {
+    padding: 10px 20px 10px 20px;
+}
+
+.item:hover {
+    cursor: pointer;
+    background-color: bisque;
+    border-radius: 15%;
+}
+
+.section_box2 {
+    display: flex;
+    justify-content: center;
+}
+.section_box {
+    display: flex;
+    justify-content: center;
+}
+.main_closet {
+    margin: 0px 15px 0px 15px;
+    width: 463px;
+    height: 483px;
+}
+
+.main_weather {
+    margin: 0px 15px 0px 15px;
+}
+
+.footer_items {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    flex-basis: 100px;
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+}
+
+.f_item {
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    flex-basis: 300px;
+}
+
+.f_item:hover {
+    cursor: pointer;
+    color: rgb(39, 177, 170);
+    border-radius: 15%;
+}
+
+.br_tagb {
+    width: 100%;
+    position: fixed;
+    height: 1px;
+    box-shadow: 0px 0px 2px 0px gray;
+    font-size: 2px;
+    background-color: black;
+    color: black;
+    bottom: 80px;
+    position: fixed;
+}
+
+.weather_headbox{
+    display:flex;
+}
+.weather-container{
+    border: 1px solid black;
+    
+  font-family: 'HelveticaNeue-UltraLight', 'Helvetica Neue UltraLight', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  letter-spacing: 1px;
+  font-size: 24px;
+  color: black;
+  width: 300px;
+  border: 1px solid #3329AA;
+  box-shadow: 3px 3px 3px rgba(black, 0.3);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(lightCyan, skyBlue, deepSkyBlue);
+  margin : 0px;
+}

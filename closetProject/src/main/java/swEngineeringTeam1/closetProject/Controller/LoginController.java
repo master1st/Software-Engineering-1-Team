@@ -1,6 +1,7 @@
 package swEngineeringTeam1.closetProject.Controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,10 @@ import swEngineeringTeam1.closetProject.Entity.UserEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,37 +23,30 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping("/login")
-    public HttpSession login (@RequestBody LoginAndSignupDto loginAndSignupDto, HttpServletRequest request) {
-        UserEntity isLogin = loginService.login(loginAndSignupDto);
-        HttpSession session = request.getSession();
-        System.out.println("ddd");
-        if(isLogin!=null) {//login success
-            session.setAttribute("user", isLogin.getUserCode());
-            System.out.println("here");
-        }
-        else {
-            session.setAttribute("user", "fail"); //modifying null is need
-            System.out.println("or");
-        }return session;
+    public Map<String, Object> login (@RequestBody LoginAndSignupDto loginAndSignupDto, HttpSession session) {
+        return loginService.login(loginAndSignupDto, session);
     }
 
     @PostMapping("/signup")
-    public UserEntity signup(@RequestBody LoginAndSignupDto loginAndSignupDto) {
-        UserEntity signup = loginService.signup(loginAndSignupDto);
-        return signup;
+    public Map<String,Object> signup(@RequestBody LoginAndSignupDto loginAndSignupDto) {
+        return loginService.signup(loginAndSignupDto);
     }
 
     @PostMapping("/logout")
-    public void logout ( HttpServletRequest request) {
-        HttpSession session= request.getSession();
+    public Map<String,Object> logout (HttpSession session) {
         session.invalidate();
+        Map<String,Object> response = new HashMap<>();
+        response.put("success",true);
+        response.put("message","로그아웃에 성공하였습니다");
+        return response;
     }
 
+    @Transactional
     @PostMapping("/deleteUser")
-    public void deleteUser (HttpServletRequest request) {
-        HttpSession session= request.getSession();
-        Long userCode = (Long) session.getAttribute("user");
+    public  Map<String,Object> deleteUser (HttpSession session) {
         session.invalidate();
-        loginService.deleteUser(userCode);
+        Long testUserCode =3L;
+        return loginService.deleteUser(testUserCode);
+
     }
 }
