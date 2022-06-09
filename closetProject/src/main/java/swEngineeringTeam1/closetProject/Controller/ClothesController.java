@@ -3,11 +3,9 @@ package swEngineeringTeam1.closetProject.Controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import swEngineeringTeam1.closetProject.Dto.ClothesDto;
-import swEngineeringTeam1.closetProject.Dto.ClothesIdDto;
 import swEngineeringTeam1.closetProject.Dto.ReadClothesDto;
 import swEngineeringTeam1.closetProject.Entity.ClothesEntity;
 import swEngineeringTeam1.closetProject.Service.ClothesService;
-import swEngineeringTeam1.closetProject.Service.LoginService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -41,26 +39,28 @@ public class ClothesController {
         return clothesService.createClothes(clothesDto, userCode);
     }
 
-    @PostMapping("/read")
-    public List<ClothesEntity> readClothes(@RequestBody ReadClothesDto readClothesDto, HttpServletRequest request){
+    @GetMapping("/")
+    public List<ClothesEntity> readClothes(@RequestParam ReadClothesDto readClothesDto, HttpServletRequest request){
         Long userCode = getUserCodeFromRequest(request);
         List<ClothesEntity> clothes = clothesService.readClothes(readClothesDto, userCode);
         return clothes;
     }
 
-//    @PutMapping("/update")
-//    public String updateClothes(@RequestBody ClothesDto clothesDto, HttpServletRequest request){
-//        Long userCode =
-//    }
+    @GetMapping("/update/{id}")
+    public ClothesEntity updateClothes(@PathVariable Long id, HttpServletRequest request){
+        Long userCode = getUserCodeFromRequest(request);
+        return clothesService.updateClothes(id,userCode);
+    }
 
-//    @PostMapping("/update")
-//    public String updateClothes(@RequestBody ClothesDto clothesDto, HttpServletRequest request){
-//        Long userCode =
-//    }
+    @PutMapping("/update/{id}")
+    public String updateClothes(@PathVariable Long id, @RequestBody ClothesDto clothesDto){
+        return clothesService.finUpdateClothes(id, clothesDto);
+    }
 
-    @GetMapping("/delete")
-    public String deleteClothes(@RequestBody ClothesIdDto clothesIdDto){
-        clothesService.deleteClothes(clothesIdDto);
+    @DeleteMapping("/delete/{id}")
+    public String deleteClothes(@PathVariable Long id, HttpServletRequest request){
+        Long userCode = getUserCodeFromRequest(request);
+        clothesService.deleteClothes(id,userCode);
         return "삭제 성공";
     }
 }

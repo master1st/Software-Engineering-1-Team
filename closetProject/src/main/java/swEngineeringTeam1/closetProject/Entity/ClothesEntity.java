@@ -45,10 +45,10 @@ public class ClothesEntity {
 
     public ClothesEntity(UserEntity user,ClothesDto clothesDto){
         this.user=user;
-        this.clothesImage=(clothesDto.getClothesImage());
-        this.season=(clothesDto.getSeason());
-        this.color=(clothesDto.getColor());
-        this.type=(clothesDto.getType());
-        this.material=(clothesDto.getMaterial());
+        this.clothesImage=clothesDto.getClothesImage();
+        this.season=clothesDto.getSeason();
+        this.color=clothesDto.getColor();
+        this.type=clothesDto.getType();
+        this.material=clothesDto.getMaterial();
     }
 }
