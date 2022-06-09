@@ -53,18 +53,14 @@ public class CodyController {
     }
 
     @GetMapping("/mycody")
-    public List<CodyReturnDto> getCody(HttpServletRequest request) {
+    public Map<String, Object> getCody(HttpServletRequest request) {
         UserEntity user = loginService.getLoginUser(request);
-        List<CodyReturnDto> codys = codyService.getAllCody(user);
-        return codys;
-
+        return codyService.getAllCody(user);
     }
 
     @GetMapping("/mycody/{codyNum}")
-    public List<CodyEntity> getExistingCody(HttpServletRequest request, @PathVariable Long codyNum) {
-
-        List<CodyEntity> existingCody = codyService.getExistingCody(codyNum);
-        return existingCody;
+    public Map<String,Object> getExistingCody(HttpServletRequest request, @PathVariable Long codyNum) {
+        return codyService.getExistingCody(codyNum);
     }
 
     @Transactional

@@ -43,10 +43,11 @@ public class LoginController {
 
     @Transactional
     @PostMapping("/deleteUser")
-    public  Map<String,Object> deleteUser (HttpSession session) {
+    public  Map<String,Object> deleteUser (HttpServletRequest request) {
+        HttpSession session = request.getSession();
         session.invalidate();
-        Long testUserCode =3L;
-        return loginService.deleteUser(testUserCode);
+        UserEntity loginUser = loginService.getLoginUser(request);
+        return loginService.deleteUser(loginUser.getUserCode());
 
     }
 }

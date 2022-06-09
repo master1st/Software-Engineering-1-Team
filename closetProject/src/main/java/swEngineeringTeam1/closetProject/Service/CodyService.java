@@ -6,12 +6,14 @@ import lombok.Setter;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import swEngineeringTeam1.closetProject.Dto.ClothesDtoForCody;
 import swEngineeringTeam1.closetProject.Dto.CodyReturnDto;
 import swEngineeringTeam1.closetProject.Entity.ClothesEntity;
 import swEngineeringTeam1.closetProject.Entity.CodyEntity;
+import swEngineeringTeam1.closetProject.Entity.CodyId;
 import swEngineeringTeam1.closetProject.Entity.UserEntity;
 import swEngineeringTeam1.closetProject.Repository.CodyRepository;
 import swEngineeringTeam1.closetProject.Repository.LoginRepository;
@@ -31,21 +33,35 @@ public class CodyService {
     private final LoginRepository loginRepository;
     private final ServletContext servletContext;
 
-    public List<CodyReturnDto> getAllCody (UserEntity user) {
-        List<CodyEntity> codyEntities = codyRepository.findAllByCodyIdUserCode(user.getUserCode());
+    public Map<String, Object> getAllCody (UserEntity user) {
+        Map<String,Object> response = new HashMap<>();
+        List<CodyEntity> codyEntities = codyRepository.findAllByCodyIdUserCode(user.getUserCode(), Sort.by("codyId.codyNum"));
 
-        List<CodyReturnDto> returnDtos = new ArrayList<>();
-        CodyReturnDto codyReturnDto = new CodyReturnDto();
-        Long currentNum=1L; //initialization
-        for (CodyEntity c : codyEntities) {
-            if (c.getCodyId().getCodyNum() > currentNum) {
-                returnDtos.add(codyReturnDto);
-                currentNum++;
-                codyReturnDto = new CodyReturnDto();
-            }
-            codyReturnDto.toDto(c);
-        }
-        return returnDtos;
+       if(codyEntities.isEmpty()) {
+           response.put("success",false);
+           response.put("message","저장된 코디가 없습니다");
+       }
+
+       else {
+           List<List<CodyReturnDto>> cody = new ArrayList<>();
+           Long currentCodyNum = codyEntities.get(0).getCodyId().getCodyNum();
+           ArrayList<CodyReturnDto> codyReturnDtos = new ArrayList<>();
+
+           for (CodyEntity c : codyEntities) {
+               if (currentCodyNum < c.getCodyId().getCodyNum()) {
+                   cody.add(codyReturnDtos);
+                   codyReturnDtos = new ArrayList<>();
+               }
+               codyReturnDtos.add(new CodyReturnDto(c));
+               currentCodyNum= c.getCodyId().getCodyNum();
+           }
+           cody.add(codyReturnDtos);
+
+           response.put("success", true);
+           response.put("message", "코디 불러오기가 완료되었습니다");
+           response.put("codyList", cody);
+       }
+        return response;
     }
 
     public Map<String,Object> createCody(UserEntity user, List<ClothesDtoForCody> clothes, MultipartFile file) {
@@ -74,9 +90,23 @@ public class CodyService {
         return response;
     }
 
-    public List<CodyEntity> getExistingCody(Long codyNum){
-        List<CodyEntity> cody = codyRepository.findAllByCodyIdCodyNum(codyNum);
-        return cody;
+    public Map<String,Object> getExistingCody(Long codyNum){
+        List<CodyEntity> codyEntities = codyRepository.findAllByCodyIdCodyNum(codyNum);
+        Map<String,Object> response = new HashMap<>();
+        if (codyEntities.isEmpty()) {
+            response.put("success",false);
+            response.put("message","해당하는 코디가 없습니다");
+        }
+        else {
+            List<CodyReturnDto> cody = new ArrayList<>();
+            for (CodyEntity c : codyEntities) {
+                cody.add(new CodyReturnDto(c));
+            }
+            response.put("success",true);
+            response.put("message","코디 찾기에 성공하였습니다");
+            response.put("cody",cody);
+        }
+        return response;
     }
 
     public void updateCody(UserEntity user, Long codyNum, List<ClothesDtoForCody> clothesList, MultipartFile file) throws IOException {

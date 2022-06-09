@@ -11,19 +11,20 @@ import java.util.List;
 
 @Data
 public class CodyReturnDto {
-    private List<String> clothesImageList; //string ->file
+    private String clothesImage; //string ->file
+    private Long clothesId;
     private String codyImage;
     private Long codyNum;
 
 
-    public void toDto (CodyEntity codyEntity) {
+    @Builder
+    public CodyReturnDto (CodyEntity codyEntity) {
         this.codyImage=codyEntity.getCodyImage();
         this.codyNum=codyEntity.getCodyId().getCodyNum();
-        this.clothesImageList.add(codyEntity.getClothesEntity().getClothesImage());
+        this.clothesId = codyEntity.getClothesEntity().getClothesId();
+        this.clothesImage = codyEntity.getClothesEntity().getClothesImage();
     }
 
-    public CodyReturnDto() {
-        this.clothesImageList=new ArrayList<>();
-    }
+
 
 }

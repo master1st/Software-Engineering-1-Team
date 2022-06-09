@@ -64,10 +64,17 @@ public class LoginService {
         }
 
         public Map<String, Object> deleteUser (Long userCode){
-            loginRepository.deleteById(userCode);
             Map<String, Object> response = new HashMap<>();
-            response.put("success", true);
-            response.put("message", "회원탈퇴가 완료되었습니다");
+            try {
+                loginRepository.deleteById(userCode);
+                response.put("success", true);
+                response.put("message", "회원탈퇴가 완료되었습니다");
+            }
+            catch (Exception e) {
+                response.put("success", true);
+                response.put("message", "회원탈퇴가 실패하였습니다");
+            }
+
             return response;
         }
 
