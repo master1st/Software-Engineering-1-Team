@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="../css/mycody.css">
     <script src="https://kit.fontawesome.com/096073a2a8.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../css/createcody.css">
-
     <script src="/js/mycody.js"></script>
     
 </head>
@@ -42,12 +41,20 @@
         </div>
             <li><button class="save"><i class="fa-solid fa-check"></i><strong>저장</strong></button></li>
         </ul>
-        <img class="mycody_img"src="/img/마이코디1.png" alt="">
+        <!-- <img class="mycody_img"src="/img/마이코디1.png" alt=""> -->
+        <input type="file" id="fileUpload" onchange="handleImageUpload(event)"/>
     </div>
     </section>
     <section class="section_center">
     <div class="section_center_top">
-        <button class="img_upload"><i class="fa-solid fa-arrow-up-from-bracket"></i><strong>이미지 업로드</strong></button>
+        <button class="img_upload"><i class="fa-solid fa-arrow-up-from-bracket"></i><strong><form method="post" enctype="multipart/form-data">
+            <div class="button">
+                <label for="chooseFile">
+                    👉 CLICK HERE! 👈
+                </label>
+            </div>
+            <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
+        </form>이미지 업로드</strong></button>
         <div class="section_img_box">
         <ul class="section_center_top_ul">
             <li><img class="cody_each" src="/img/코디1.png" alt=""></li>
@@ -73,6 +80,7 @@
             <li class="f_item">about</li>
         </ul>
     </footer>
+    <script defer src="/js/createcody.js"></script>
 </body>
 
 </html>
