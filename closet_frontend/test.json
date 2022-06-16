@@ -3,29 +3,29 @@
     "codyList": [
         [
             {
-                "clothesImage": "이미지테스트.jpg",
+                "clothesImage": "../img/코디3.png",
                 "clothesId": 1,
-                "codyImage": "../img/마이코디1.png",
+                "codyImage": "../img/코디2.png",
                 "codyNum": 1
             },
             {
-                "clothesImage": "이미지테스트",
+                "clothesImage": "../img/코디3.png",
                 "clothesId": 3,
-                "codyImage": "../img/마이코디1.png",
+                "codyImage": "../img/코디2.png",
                 "codyNum": 1
             }
         ],
         [
             {
-                "clothesImage": "ㅇ",
+                "clothesImage": "../img/코디3.png",
                 "clothesId": 1,
-                "codyImage": "default",
+                "codyImage": "../img/코디2.png",
                 "codyNum": 2
             },
             {
-                "clothesImage": "ㅎ",
+                "clothesImage": "../img/코디3.png",
                 "clothesId": 2,
-                "codyImage": "default",
+                "codyImage": "../img/코디2.png",
                 "codyNum": 2
             }
         ]

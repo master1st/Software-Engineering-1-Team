@@ -1,67 +1,8 @@
-// var imgfile;
 
-// function loadFile(input) {
-//     var file = input.files[0];	//선택된 파일 가져오기
-//     imgfile = file;
-//     console.log(imgfile);
-//     //미리 만들어 놓은 div에 text(파일 이름) 추가
-//     // var name = document.getElementById('fileName');
-//     // name.textContent = file.name;
-
-//     //새로운 이미지 div 추가
-//     var newImage = document.createElement("img");
-//     newImage.setAttribute("class", 'img');
-
-//     //이미지 source 가져오기
-//     newImage.src = URL.createObjectURL(file);
-
-//     newImage.style.width = "70%";
-//     newImage.style.height = "70%";
-//     newImage.style.visibility = "hidden";   //버튼을 누르기 전까지는 이미지를 숨긴다
-//     newImage.style.objectFit = "contain";
-
-//     //이미지를 image-show div에 추가
-//     var container = document.getElementById('image-show');
-//     // container.appendChild(newImage);
-    
-// function loadFile(input) {
-// const data = new FormData();
-// // data.enctype = "multipart/form-data";
-// data.append('file', input.files[0]);
-// data.append('JsonString', "asddas");
-// console.log(data);
-// fetch("http://localhost:8080/mycody", {
-//   method: "POST",
-//   // headers: {
-//   // "Content-Type": "multipart/form-data",
-//   // }, 
-//   // headers 를 비워준다.
-//   body: data
-
-
-
-//   // body 엔 JS object 가 아닌 form 을 그대로 보낸다.
-// });
-// };
-// document.querySelector('#fileUpload').addEventListener('onchange', event => {
-//   handleImageUpload(event);
-// })
-
-//create cody {경은이누나한테 사진 따로 json data 따로 보내야 될것같다고 말해야할듯.}
-
-
-
-
-
-      //클릭한놈의 item id랑 json 파일의 codyNum이랑 비교해서 값이 같으면, 그놈에 대한 페이지로 이동과 동시에, 
-      //그 옷들을 보여줌 
-      //나는 이해가 안되는게. 도대체 ㅅㅂ 저 코디이미지들은 워떻게 보여줄거냐 아썅;;;
-      //안보이는거 invisible로 해놨다가, 아니지.. 이미 해놨네 위에 ?
-
-//구현 1 만약 코디 리스트가 10개 이상이면 다음 페이지로 이동 , 
 
 // cody Get 요청 
 const mycody_1 = document.querySelector('.mycody_1');
+const mycody_2 = document.querySelector('.mycody_2');
 fetch("../test.json")
 .then(response => {
    return response.json();
@@ -76,29 +17,52 @@ fetch("../test.json")
     img.setAttribute('class' , 'mycody_img');
     img.setAttribute('id' , jsondata.codyList[i][0].codyNum);
     img.setAttribute('src' , jsondata.codyList[i][0].codyImage);
+    if(i<5){
     mycody_1.appendChild(img);
+    } else {
+      mycody_2.appendChild(img);
+    }
+    
 
     for(j=0; j<jsondata.codyList[i].length; j++)
     {
-    const img = document.createElement('img');
-    img.setAttribute('class' , 'mycloset_img');
-    img.setAttribute('id' , jsondata.codyList[i][j].clothesId);
-    img.setAttribute('src' , jsondata.codyList[i][j].clothesImage);
-    mycody_1.appendChild(img);
-    console.log(img.id);
-    
-    img.addEventListener("click",() => {
-      if(img.id === jsondata.codyList[i][j].codyNum){
-        location.href = `http://localhost:8080/mycody/${img.id}`;
+    // const img = document.createElement('img');
+    // img.setAttribute('class' , 'mycloset_img');
+    // img.setAttribute('id' , jsondata.codyList[i][j].clothesId);
+    // img.setAttribute('src' , jsondata.codyList[i][j].clothesImage);
+    // mycody_1.appendChild(img);
+    // console.log(img.id);
+    // 수정페이지에서 할것이 사진변경, 그리고 closet 올릴때, 사진 날씨정보나 그런것들 올리는 건데, 
+    // 그거 변경에 대한 페이지가 필요한데 처음 이미지를 만들때의 그 정보가 필요해.
+    // 사용자가 입력한 input들을 db 저장? 쌉가능 그냥 일반 div태그로 해서 query로 빼면되.
+    // ㅇㅋ 바로간다. 그럼 수정하기에서 필요한건 먼저 필요한 데이터들을 담는 text필드, 그리고 
+    // 삭제버튼과, 수정하기 버튼 ok 여기까지 하면 완벽 
+    // 그니까 사진을 누르면 동시에 수정하기 페이지가 보여지며, fetch를 보내야해 방법은 ? 
+    }
 
-        // 새탭으로 띄워서 innerhtml 코디 보여주기
-         
-      }
-    })
+    if(jsondata.codyList.length > 10){
+      //10개가 될때마다 새로운페이지
     }
   }
-//이렇게 첫번째 줄은 코디 리스트고 2번째줄이 옷 아이템 리스트
+  
+  for(i=0; i<jsondata.codyList.length; i++)
+  {
+    for(j=0; j<jsondata.codyList[i].length; j++)
+    {
+  img.addEventListener("click",() => {
+    if(img.id === jsondata.codyList[i][j].codyNum){
+      location.href = "http://127.0.0.1:5500/html/createcody.html";
+      console.log(img.id);
+      fetch(`http://localhost:8080/mycody/${img.id}`)
+      .then(response => {
+         return response.json();
+         })
+      .then(jsondata => console.log(jsondata))
 
+  }
+  })
+  }
+  }
 })
 // fetch('../test.json', {
 //   method: 'GET',
@@ -117,7 +81,7 @@ fetch("../test.json")
 // });
 
 
-
+//get요청으로 mycloset 보내고, 그것을 문자열형태로 어디 저장해야하나?
 const handleImageUpload = event => {
   const files = event.target.files
   const formData = new FormData()

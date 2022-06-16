@@ -1,3 +1,5 @@
+
+
 fetch(url)
   .then((response) => response.json())
   .then((data) => console.log(data));
@@ -29,3 +31,4 @@ async function postData(url = '', data = {}) {
 
 
 //코디 조회 파라미터 옷들의 id, 옷 img 주소, 옷 name, 옷 설명 
+
