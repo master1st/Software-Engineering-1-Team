@@ -17,6 +17,8 @@ public interface CodyRepository extends JpaRepository<CodyEntity, CodyId> {
      @OrderBy("CodyId.codyNum ASC")
      List<CodyEntity> findAllByCodyIdUserCode(Long userCode, Sort sort);
 
+     CodyEntity findFirstByCodyIdCodyNum(Long codyNum);
+
      @Query(value = "SELECT MAX(CODYNUM) FROM cody", nativeQuery = true)
      Long findMaxCodyNum ();
 
