@@ -81,40 +81,80 @@ fetch("../test.json")
 // });
 
 
+
 //get요청으로 mycloset 보내고, 그것을 문자열형태로 어디 저장해야하나?
+var input = document.querySelector('input[type="file"]')
+
+var data = new FormData()
+data.append('file', input.files[0])
+data.append('jsonString', {
+  "clothesList": [
+      {
+          "clothesId": 1,
+          "clothesImage": "파일명.jpg",
+          "color": "red",
+          "material": "leather",
+          "type": "pants",
+          "season": "fall",
+          "userCode": 1
+      },
+      {
+          "clothesId": 2,
+          "clothesImage": "image",
+          "color": "black",
+          "material": "material",
+          "type": "hat",
+          "season": "all",
+          "userCode": 1
+      }
+  ]
+})
+
+fetch('http://localhost:8080/mycody', {
+  method: 'POST',
+  body: data
+})
+.then(response => response.json())
+  .then(data => {
+    console.log(data)
+  })
+  .catch(error => {
+    console.error(error)
+  })
+
+
 const handleImageUpload = event => {
   const files = event.target.files
   const formData = new FormData()
-  formData.append('myFile', files[0])
+  formData.append('file', files[0])
+  formData.append('jsonString', {
+    "clothesList": [
+      {
+          "clothesId": 1,
+          "clothesImage": "파일명.jpg",
+          "color": "red",
+          "material": "leather",
+          "type": "pants",
+          "season": "fall",
+          "userCode": 1
+      },
+      {
+          "clothesId": 2,
+          "clothesImage": "image",
+          "color": "black",
+          "material": "material",
+          "type": "hat",
+          "season": "all",
+          "userCode": 1
+      }
+  ]
+  })
 
   fetch('http://localhost:8080/mycody', {
     method: 'POST',
-    headers: { 'Content-Type' : 'multipart/form-data'
+    headers: { 
     },
-    body: JSON.stringify({ formData , 
-    "jsonString": {
-                  "clothesList": [
-                      {
-                          "clothesId": 1,
-                          "clothesImage": "파일명.jpg",
-                          "color": "red",
-                          "material": "leather",
-                          "type": "pants",
-                          "season": "fall",
-                          "userCode": 1
-                      },
-                      {
-                          "clothesId": 2,
-                          "clothesImage": "image",
-                          "color": "black",
-                          "material": "material",
-                          "type": "hat",
-                          "season": "all",
-                          "userCode": 1
-                      }
-                  ]
-              }
-  })
+    body: formData,
 })
   .then(response => response.json())
   .then(data => {

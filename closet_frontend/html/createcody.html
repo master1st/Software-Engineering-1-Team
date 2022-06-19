@@ -43,19 +43,30 @@
             <li><button class="save"><i class="fa-solid fa-check"></i><strong>저장</strong></button></li>
         </ul>
         <!-- <img class="mycody_img"src="/img/마이코디1.png" alt=""> -->
-        <input type="file" id="fileUpload" onchange="handleImageUpload(event)"/>
+        <!-- <input type="file" id="fileUpload" onchange="handleImageUpload(event)"/> -->
     </div>
     </section>
     <section class="section_center">
     <div class="section_center_top">
-        <button class="img_upload"><i class="fa-solid fa-arrow-up-from-bracket"></i><strong><form method="post" enctype="multipart/form-data">
-            <div class="button">
-                <label for="chooseFile">
-                    👉 CLICK HERE! 👈
-                </label>
+
+        <form>
+            <div>
+              <label>Select file to upload</label>
+              <input type="file">
             </div>
-            <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
-        </form>이미지 업로드</strong></button>
+            <button type="submit">Convert</button>
+          </form>
+
+         <!-- <form method="post" enctype="multipart/form-data">
+            <div>
+              <label for="file">Choose file to upload</label>
+              <input type="file" id="file" name="file" multiple>
+            </div>
+            <div>
+              <button class="submit_btn"  onchange="handleImageUpload(event)" >Submit</button>
+            </div>
+           </form> -->
+
         <div class="section_img_box">
         <ul class="section_center_top_ul">
             <li><img class="cody_each" src="/img/코디1.png" alt=""></li>
