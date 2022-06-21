@@ -52,8 +52,8 @@ public class CodyController {
         return codyService.createCody( user, clothesList, file);
     }
 
-    @GetMapping("/mycody")
-    public Map<String, Object> getCody(HttpServletRequest request) {
+    @GetMapping(value = "/mycody")
+    public Map<String, Object> getCody(HttpServletRequest request) throws IOException {
         UserEntity user = loginService.getLoginUser(request);
         return codyService.getAllCody(user);
     }
@@ -76,9 +76,9 @@ public class CodyController {
 
     @Transactional
     @DeleteMapping("/mycody/{codyNum}")
-    public void deleteCody(HttpServletRequest request,@PathVariable Long codyNum) {
+    public Map<String,Object> deleteCody(HttpServletRequest request,@PathVariable Long codyNum) {
 
-        codyService.deleteCody(codyNum);
+        return codyService.deleteCody(codyNum);
     }
 
 
