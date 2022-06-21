@@ -3,12 +3,12 @@ package swEngineeringTeam1.closetProject.Controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import swEngineeringTeam1.closetProject.Dto.ClothesDto;
-import swEngineeringTeam1.closetProject.Dto.ReadClothesDto;
 import swEngineeringTeam1.closetProject.Entity.ClothesEntity;
+import swEngineeringTeam1.closetProject.Entity.UserEntity;
 import swEngineeringTeam1.closetProject.Service.ClothesService;
+import swEngineeringTeam1.closetProject.Service.LoginService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -17,39 +17,31 @@ import java.util.List;
 public class ClothesController {
 
     private final ClothesService clothesService;
-
-    private Long getUserCodeFromRequest(HttpServletRequest request){
-        HttpSession session = request.getSession();
-        return (Long)session.getAttribute("userCode");
-    }
+    private final LoginService loginService;
 
     //로그인 상태로 옷장 접속시 userCode를 통해 해당 사용자의 옷 데이터를 전송
     @GetMapping("/")
-    public List<ClothesEntity> allClothes(@RequestParam(value="userCode") Long userCode/*,HttpServletRequest request*/){
+    public List<ClothesEntity> readClothes(
+            @RequestParam(required = false) String season,
+            @RequestParam(required = false) String color,
+            @RequestParam(required = false) String type,
+            @RequestParam(required = false) String material,
+            HttpServletRequest request){
         //Long userCode = getUserCodeFromRequest(request);
-        return clothesService.allClothes(userCode);
+        UserEntity user = loginService.getLoginUser(request);
+        return clothesService.readClothes(user, season, color, type, material);
     }
 
     @PostMapping("/create")
-    public ClothesEntity createClothes(@RequestBody ClothesDto clothesDto, HttpServletRequest request){
-//        HttpSession session = request.getSession();
-//        Long userCode = (Long)session.getAttribute("userCode");
-//        Long userCode = getUserCodeFromRequest(request);
-        Long userCode = clothesDto.getUserCode();
-        return clothesService.createClothes(clothesDto, userCode);
-    }
-
-    @GetMapping("/read")
-    public List<ClothesEntity> readClothes(@RequestParam ReadClothesDto readClothesDto, HttpServletRequest request){
-        Long userCode = getUserCodeFromRequest(request);
-        List<ClothesEntity> clothes = clothesService.readClothes(readClothesDto, userCode);
-        return clothes;
+    public String createClothes(@RequestBody ClothesDto clothesDto, HttpServletRequest request){
+        UserEntity user = loginService.getLoginUser(request);
+        return clothesService.createClothes(clothesDto, user);
     }
 
     @GetMapping("/update/{id}")
     public ClothesEntity updateClothes(@PathVariable Long id, HttpServletRequest request){
-        Long userCode = getUserCodeFromRequest(request);
-        return clothesService.updateClothes(id,userCode);
+        UserEntity user = loginService.getLoginUser(request);
+        return clothesService.updateClothes(id,user);
     }
 
     @PutMapping("/update/{id}")
@@ -59,8 +51,8 @@ public class ClothesController {
 
     @DeleteMapping("/delete/{id}")
     public String deleteClothes(@PathVariable Long id, HttpServletRequest request){
-        Long userCode = getUserCodeFromRequest(request);
-        clothesService.deleteClothes(id,userCode);
+        UserEntity user = loginService.getLoginUser(request);
+        clothesService.deleteClothes(id,user);
         return "삭제 성공";
     }
 }
