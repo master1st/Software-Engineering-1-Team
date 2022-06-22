@@ -1,5 +1,50 @@
 var j;
+// cody Get 요청 
+const mycody_1 = document.querySelector('.mycody_1');
+const mycody_2 = document.querySelector('.mycody_2');
+fetch("../test.json")
+.then(response => {
+   return response.json();
+})
 
+.then(jsondata => {
+  // jsondata.length 
+  // jsondata[0].length
+  j = jsondata;
+  for(i=0; i<jsondata.codyList.length; i++)
+  {
+    
+    const img = document.createElement('img');
+    img.setAttribute('class' , 'mycody_img');
+    img.setAttribute('id' , jsondata.codyList[i][0].codyNum);
+    img.setAttribute('src' , jsondata.codyList[i][0].codyImage);
+    img.onclick= function() {
+      img_detail(img);
+    }
+    
+    if(i<5){
+    mycody_1.appendChild(img);
+    } else {
+      mycody_2.appendChild(img);
+    }
+    
+    for(j=0; j<jsondata.codyList[i].length; j++)
+    {
+    // const img = document.createElement('img');
+    // img.setAttribute('class' , 'mycloset_img');
+    // img.setAttribute('id' , jsondata.codyList[i][j].clothesId);
+    // img.setAttribute('src' , jsondata.codyList[i][j].clothesImage);
+    // mycody_1.appendChild(img);
+    // console.log(img.id);
+    // 수정페이지에서 할것이 사진변경, 그리고 closet 올릴때, 사진 날씨정보나 그런것들 올리는 건데, 
+    // 그거 변경에 대한 페이지가 필요한데 처음 이미지를 만들때의 그 정보가 필요해.
+    // 사용자가 입력한 input들을 db 저장? 쌉가능 그냥 일반 div태그로 해서 query로 빼면되.
+    // ㅇㅋ 바로간다. 그럼 수정하기에서 필요한건 먼저 필요한 데이터들을 담는 text필드, 그리고 
+    // 삭제버튼과, 수정하기 버튼 ok 여기까지 하면 완벽 
+    // 그니까 사진을 누르면 동시에 수정하기 페이지가 보여지며, fetch를 보내야해 방법은 ? 
+    }
+  }
+})
 // closet get 요청 
 const closet1 = document.querySelector('.closet1');
 
@@ -73,51 +118,7 @@ fetch('http://localhost:8080/mycody', {
   })
 
 
-// cody Get 요청 
-const mycody_1 = document.querySelector('.mycody_1');
-const mycody_2 = document.querySelector('.mycody_2');
-fetch("../test.json")
-.then(response => {
-   return response.json();
-})
 
-.then(jsondata => {
-  // jsondata.length 
-  // jsondata[0].length
-  j = jsondata;
-  for(i=0; i<jsondata.codyList.length; i++)
-  {
-    
-    const img = document.createElement('img');
-    img.setAttribute('class' , 'mycody_img');
-    img.setAttribute('id' , jsondata.codyList[i][0].codyNum);
-    img.setAttribute('src' , jsondata.codyList[i][0].codyImage);
-    img.onclick= function() {
-      img_detail(img);
-    }
-    
-    if(i<5){
-    mycody_1.appendChild(img);
-    } else {
-      mycody_2.appendChild(img);
-    }
-    
-    for(j=0; j<jsondata.codyList[i].length; j++)
-    {
-    // const img = document.createElement('img');
-    // img.setAttribute('class' , 'mycloset_img');
-    // img.setAttribute('id' , jsondata.codyList[i][j].clothesId);
-    // img.setAttribute('src' , jsondata.codyList[i][j].clothesImage);
-    // mycody_1.appendChild(img);
-    // console.log(img.id);
-    // 수정페이지에서 할것이 사진변경, 그리고 closet 올릴때, 사진 날씨정보나 그런것들 올리는 건데, 
-    // 그거 변경에 대한 페이지가 필요한데 처음 이미지를 만들때의 그 정보가 필요해.
-    // 사용자가 입력한 input들을 db 저장? 쌉가능 그냥 일반 div태그로 해서 query로 빼면되.
-    // ㅇㅋ 바로간다. 그럼 수정하기에서 필요한건 먼저 필요한 데이터들을 담는 text필드, 그리고 
-    // 삭제버튼과, 수정하기 버튼 ok 여기까지 하면 완벽 
-    // 그니까 사진을 누르면 동시에 수정하기 페이지가 보여지며, fetch를 보내야해 방법은 ? 
-    }
-  }
 
 
   //코디 Update 수정하기 요청
@@ -143,7 +144,6 @@ fetch("../test.json")
 })   
 });
 }
-})
 
   //코디 Delete 삭제하기 요청 
   function img_delete(delete_img){
@@ -162,9 +162,7 @@ fetch("../test.json")
     
     location.href = "http://127.0.0.1:5500/html/createcody.html";
 })   
-});
-    
-  }
+};
 
 
 
