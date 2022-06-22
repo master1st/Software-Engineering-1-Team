@@ -3,7 +3,6 @@ package swEngineeringTeam1.closetProject.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
 import swEngineeringTeam1.closetProject.Dto.ClothesDto;
 import swEngineeringTeam1.closetProject.Dto.ClothesReturnDto;
@@ -13,7 +12,6 @@ import swEngineeringTeam1.closetProject.Repository.ClothesRepository;
 
 import javax.servlet.ServletContext;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
