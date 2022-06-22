@@ -159,7 +159,7 @@ public class ClothesService {
     }
 
     public String getFilePath() {
-        return servletContext.getRealPath("/")+"clothesImage/";
+        return servletContext.getRealPath("/")+"clothesImage\\";
     }
 
     public String imageSave (MultipartFile file,Long clothesId) throws IOException {

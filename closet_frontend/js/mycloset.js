@@ -1,5 +1,7 @@
 function loadItems(){
-    return fetch("/html/data.json")
+    return fetch("http://localhost:8080/mycloset/",{
+      method:"GET"
+    })
     .then((response)=>response.json())
     .then((json)=>json.items);
 }
