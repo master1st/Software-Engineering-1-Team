@@ -1,4 +1,4 @@
-
+var j;
 
 // cody Get 요청 
 const mycody_1 = document.querySelector('.mycody_1');
@@ -7,23 +7,28 @@ fetch("../test.json")
 .then(response => {
    return response.json();
 })
-// .then(jsondata => console.log(jsondata))
+
 .then(jsondata => {
   // jsondata.length 
   // jsondata[0].length
+  j = jsondata;
   for(i=0; i<jsondata.codyList.length; i++)
   {
+    
     const img = document.createElement('img');
     img.setAttribute('class' , 'mycody_img');
     img.setAttribute('id' , jsondata.codyList[i][0].codyNum);
     img.setAttribute('src' , jsondata.codyList[i][0].codyImage);
+    img.onclick= function() {
+      img_detail(img);
+    }
+    
     if(i<5){
     mycody_1.appendChild(img);
     } else {
       mycody_2.appendChild(img);
     }
     
-
     for(j=0; j<jsondata.codyList[i].length; j++)
     {
     // const img = document.createElement('img');
@@ -39,11 +44,37 @@ fetch("../test.json")
     // 삭제버튼과, 수정하기 버튼 ok 여기까지 하면 완벽 
     // 그니까 사진을 누르면 동시에 수정하기 페이지가 보여지며, fetch를 보내야해 방법은 ? 
     }
-
-    if(jsondata.codyList.length > 10){
-      //10개가 될때마다 새로운페이지
+  }
+  //cass
+  function img_detail(mycody_img){
+    for(i=0; i<jsondata.codyList.length; i++)
+    {
+    for(j=0; j<jsondata.codyList[i].length; j++)
+    {
+      console.log(jsondata.codyList);
+      if (mycody_img.id == jsondata.codyList[i][j].codyNum){
+      if (mycody_img.id == jsondata.codyList[i][j+1].codyNum){
+        var img=new Image();
+        img.src=jsondata.codyList[i][j].clothesImage;
+        var img_width=img.width+500;
+        var win_width=img.width+25;
+        var img_height=img.height+500;
+        var win=img.height+30;
+        //================================
+        var img2=new Image();
+        img2.src=jsondata.codyList[i][j].clothesImage;
+        var img_width=img2.width+500;
+        var win_width=img2.width+25;
+        var img_height=img2.height+500;
+        var win=img2.height+30;
+        var OpenWindow=window.open('','_blank', 'width='+img_width+', height='+img_height+', menubars=no, scrollbars=auto');
+        OpenWindow.document.write("<style>body{margin:0px;}</style><img src='"+jsondata.codyList[i][j].clothesImage+"' width='"+win_width+"'>");
+        OpenWindow.document.write("<style>body{margin:0px;}</style><img src='"+jsondata.codyList[i][j+1].clothesImage+"' width='"+win_width+"'>");
+      }
+      }
     }
   }
+}
   
   for(i=0; i<jsondata.codyList.length; i++)
   {
