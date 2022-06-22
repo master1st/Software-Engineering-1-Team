@@ -36,17 +36,19 @@ public class ClothesController {
             @RequestParam(required = false) String color,
             @RequestParam(required = false) String type,
             @RequestParam(required = false) String material,
-            @RequestParam Long userCode) throws IOException {
+            @RequestParam String userCode) throws IOException {
         //Long userCode = getUserCodeFromRequest(request);
-        UserEntity user = getUser(userCode);
+        Long longUserCode = Long.parseLong(userCode);
+        UserEntity user = getUser(longUserCode);
         return clothesService.readClothes(user, season, color, type, material);
     }
 
     @PostMapping("/")
-    public Map<String, Object> createClothes (@RequestParam String jsonClothesDto, @RequestParam Long userCode, @RequestPart MultipartFile file) throws IOException {
+    public Map<String, Object> createClothes (@RequestParam String jsonClothesDto, @RequestParam String userCode, @RequestPart MultipartFile file) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         ClothesDto clothesDto = null;
-        UserEntity user= getUser(userCode);
+        Long longUserCode = Long.parseLong(userCode);
+        UserEntity user= getUser(longUserCode);
         try {
             clothesDto = mapper.readValue(jsonClothesDto, ClothesDto.class);
         } catch (JsonProcessingException e) {
@@ -56,8 +58,9 @@ public class ClothesController {
     }
 
     @GetMapping("/{id}")
-    public Map<String, Object> updateClothes(@PathVariable Long id, @RequestParam Long userCode){
-        UserEntity user = getUser(userCode);
+    public Map<String, Object> updateClothes(@PathVariable Long id, @RequestParam String userCode){
+        Long longUserCode = Long.parseLong(userCode);
+        UserEntity user = getUser(longUserCode);
         return clothesService.updateClothes(id,user);
     }
 
@@ -74,8 +77,9 @@ public class ClothesController {
     }
 
     @DeleteMapping("/{id}")
-    public Map<String, Object> deleteClothes(@PathVariable Long id, @RequestParam Long userCode){
-        UserEntity user = getUser(userCode);
+    public Map<String, Object> deleteClothes(@PathVariable Long id, @RequestParam String userCode){
+        Long longUserCode = Long.parseLong(userCode);
+        UserEntity user = getUser(longUserCode);
         return clothesService.deleteClothes(id,user);
     }
 }
