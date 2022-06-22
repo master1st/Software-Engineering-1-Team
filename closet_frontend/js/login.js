@@ -24,7 +24,7 @@ function login() {
       if(data.success==true) {
         alert(data.message)  
       // 스토리지에 저장
-      localStorage.setItem('sessionid', data.sessionId)     
+      localStorage.setItem('usercode', data.userCode)     
       // 로그인 결과 반영
     //   edit.classList.remove("hide")
     //   join.classList.add("hide")
