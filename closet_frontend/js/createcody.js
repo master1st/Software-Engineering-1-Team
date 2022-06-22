@@ -45,34 +45,43 @@ fetch("../test.json")
     }
   }
 })
-// closet get 요청 
+// closet get 요청 "http://localhost:8080/mycloset/"
 const closet1 = document.querySelector('.closet1');
-
-fetch("http://localhost:8080/mycloset/")
+const box = document.querySelector('.box');
+fetch("../test_post.json")
 .then(response => {
    return response.json();
-})
+})  
 .then(jsondata => {
-  // jsondata.length 
-  // jsondata[0].length
-  j = jsondata;
-  for(i=0; i<jsondata.codyList.length; i++)
-  {
-    
+  console.log(jsondata.clothesList)
+  jsondata.clothesList.map(item =>{
     const img = document.createElement('img');
-    img.setAttribute('class' , 'mycody_img');
-    img.setAttribute('id' , jsondata.codyList[i][0].codyNum);
-    img.setAttribute('src' , jsondata.codyList[i][0].codyImage);
+    img.setAttribute('class' , 'mycloset_img');
+    img.setAttribute('id' , item.clothesId);
+    img.setAttribute('src' , item.clothesImage);
+    img.setAttribute('ondragstart', 'dragStart(event);');
+    img.setAttribute('draggable', 'true');
+    img.setAttribute('ondragend', 'dragEnd(event)');
     img.onclick= function() {
       img_detail(img);
     }
-    
-    if(i<5){
-    mycody_1.appendChild(img);
-    } else {
-      mycody_2.appendChild(img);
-    }
-  }
+    box.appendChild(img);
+  })
+  // console.log(jsondata.clothesList[0]);
+  // for(i=0; i<jsondata.codyList.length; i++)
+  // { 
+  //   //append child 자식 추가해서, 거기서 또 filtering을 how
+  //   //mycody -> 수정하려면, 옷 정보들만 넘겨줘서 그것들로 진행하면된다.
+  //   //현재 season과 userCode 포함. 
+  //   const img = document.createElement('img');
+  //   img.setAttribute('class' , 'mycody_img');
+  //   img.setAttribute('id' , jsondata.codyList[i][0].codyNum);
+  //   img.setAttribute('src' , jsondata.codyList[i][0].codyImage);
+  //   img.onclick= function() {
+  //     img_detail(img);
+  //   }
+  //   box.appendChild(img);
+  // }
 })
 
 
@@ -104,9 +113,33 @@ data.append('jsonString', {
       }
   ]
 })
+// data.append('jsonString', {
+//   "clothesList": [
+//       {
+//           "clothesId": 1,
+//           "clothesImage": "파일명.jpg",
+//           "color": "red",
+//           "material": "leather",
+//           "type": "pants",
+//           "season": "fall",
+//           "userCode": 1
+//       },
+//       {
+//           "clothesId": 2,
+//           "clothesImage": "image",
+//           "color": "black",
+//           "material": "material",
+//           "type": "hat",
+//           "season": "all",
+//           "userCode": 1
+//       }
+//   ]
+// })
 
 fetch('http://localhost:8080/mycody', {
   method: 'POST',
+//   headers: {"Content-Type": "multipart/form-data"
+// },
   body: data
 })
 .then(response => response.json())
