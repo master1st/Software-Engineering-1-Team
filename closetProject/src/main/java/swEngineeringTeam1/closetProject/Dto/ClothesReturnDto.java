@@ -14,9 +14,9 @@ public class ClothesReturnDto {
     private String type;
     private String material;
 
-    public ClothesReturnDto(ClothesEntity clothesEntity){
+    public ClothesReturnDto(ClothesEntity clothesEntity,String path){
         this.clothesId = clothesEntity.getClothesId();
-        this.clothesImage = clothesEntity.getClothesImage();
+        this.clothesImage = path;
         this.season=clothesEntity.getSeason();
         this.color=clothesEntity.getColor();
         this.type=clothesEntity.getType();

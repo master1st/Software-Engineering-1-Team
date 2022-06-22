@@ -52,7 +52,7 @@ public class ClothesController {
     }
 
     @GetMapping("/{id}")
-    public ClothesEntity updateClothes(@PathVariable Long id, HttpServletRequest request){
+    public ClothesReturnDto updateClothes(@PathVariable Long id, HttpServletRequest request){
         UserEntity user = loginService.getLoginUser(request);
         return clothesService.updateClothes(id,user);
     }

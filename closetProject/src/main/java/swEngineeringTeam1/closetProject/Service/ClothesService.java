@@ -22,7 +22,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClothesService {
     private final ClothesRepository clothesRepository;
-    private final LoginService loginService;
     private final ServletContext servletContext;
 
     public String createClothes(ClothesDto clothesDto, MultipartFile file, UserEntity user) throws IOException{
@@ -90,20 +89,20 @@ public class ClothesService {
             clothesEntityList = clothesRepository.findAllByUserAndSeasonAndColorAndTypeAndMaterial(user,season,color,type,material);
         List<ClothesReturnDto> clothesReturnDtoList = new ArrayList<>();
         for (ClothesEntity c : clothesEntityList){
-            ClothesReturnDto clothesReturnDto = new ClothesReturnDto(c);
-            clothesReturnDto.setClothesImage(ImageRead(c.getClothesImage()));
-            clothesReturnDtoList.add(new ClothesReturnDto(c));
+            ClothesReturnDto clothesReturnDto = new ClothesReturnDto(c,getFilePath()+c.getClothesImage());
+            clothesReturnDtoList.add(clothesReturnDto);
         }
         return clothesReturnDtoList;
     }
-    public ClothesEntity updateClothes(Long clothesId, UserEntity user){
+    public ClothesReturnDto updateClothes(Long clothesId, UserEntity user){
         ClothesEntity clothes = clothesRepository.findById(clothesId).orElse(null);
+        ClothesReturnDto clothesReturnDto = new ClothesReturnDto(clothes,getFilePath()+clothes.getClothesImage());
         //수정하려는 옷과 접속한 user의 정보가 일치하지 않으면 null 반환
         if (clothes.getUser() != user ){
             return null;
         }
         else {
-            return clothes;
+            return clothesReturnDto;
         }
     }
 
