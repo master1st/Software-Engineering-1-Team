@@ -1,10 +1,13 @@
 package swEngineeringTeam1.closetProject.Controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import swEngineeringTeam1.closetProject.Dto.ClothesDto;
 import swEngineeringTeam1.closetProject.Dto.ClothesReturnDto;
+import swEngineeringTeam1.closetProject.Dto.CodyRequestDto;
 import swEngineeringTeam1.closetProject.Entity.ClothesEntity;
 import swEngineeringTeam1.closetProject.Entity.UserEntity;
 import swEngineeringTeam1.closetProject.Service.ClothesService;
@@ -35,24 +38,38 @@ public class ClothesController {
         return clothesService.readClothes(user, season, color, type, material);
     }
 
-    @PostMapping("/create")
-    public String createClothes (@RequestParam ClothesDto clothesDto, @RequestPart MultipartFile file, HttpServletRequest request) throws IOException {
+    @PostMapping("/")
+    public String createClothes (@RequestParam String jsonClothesDto, @RequestPart MultipartFile file, HttpServletRequest request) throws IOException {
         UserEntity user = loginService.getLoginUser(request);
+        ObjectMapper mapper = new ObjectMapper();
+        ClothesDto clothesDto = null;
+        try {
+            clothesDto = mapper.readValue(jsonClothesDto, ClothesDto.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return clothesService.createClothes(clothesDto, file, user);
     }
 
-    @GetMapping("/update/{id}")
+    @GetMapping("/{id}")
     public ClothesEntity updateClothes(@PathVariable Long id, HttpServletRequest request){
         UserEntity user = loginService.getLoginUser(request);
         return clothesService.updateClothes(id,user);
     }
 
-    @PutMapping("/update/{id}")
-    public String updateClothes(@PathVariable Long id, @RequestParam ClothesDto clothesDto, @RequestPart MultipartFile file) throws IOException {
+    @PutMapping("/{id}")
+    public String updateClothes(@PathVariable Long id, @RequestParam String jsonClothesDto, @RequestPart MultipartFile file) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        ClothesDto clothesDto = null;
+        try {
+            clothesDto = mapper.readValue(jsonClothesDto, ClothesDto.class);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return clothesService.finUpdateClothes(id, file, clothesDto);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public String deleteClothes(@PathVariable Long id, HttpServletRequest request){
         UserEntity user = loginService.getLoginUser(request);
         clothesService.deleteClothes(id,user);

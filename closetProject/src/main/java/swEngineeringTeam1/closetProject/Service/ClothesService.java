@@ -142,14 +142,14 @@ public class ClothesService {
     }
 
     public String getFilePath() {
-        return servletContext.getRealPath("/")+"clothesImage\\";
+        return servletContext.getRealPath("/")+"clothesImage/";
     }
 
     public String imageSave (MultipartFile file) throws IOException {
         String originalFileName = file.getOriginalFilename();
 
         String root = getFilePath();
-
+        System.out.println(root+originalFileName);
         File dest = new File(root+originalFileName);
         file.transferTo(dest);
         return originalFileName;

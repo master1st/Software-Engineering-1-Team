@@ -1,12 +1,14 @@
 package swEngineeringTeam1.closetProject.Dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import swEngineeringTeam1.closetProject.Entity.ClothesEntity;
 import swEngineeringTeam1.closetProject.Entity.UserEntity;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class ClothesDto {
     private Long clothesId;
     private String season;
