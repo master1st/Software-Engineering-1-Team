@@ -59,7 +59,7 @@ public class CodyController {
     }
 
     @GetMapping("/mycody/{codyNum}")
-    public Map<String,Object> getExistingCody(HttpServletRequest request, @PathVariable Long codyNum) {
+    public Map<String,Object> getExistingCody(HttpServletRequest request, @PathVariable Long codyNum) throws IOException {
         return codyService.getExistingCody(codyNum);
     }
 
