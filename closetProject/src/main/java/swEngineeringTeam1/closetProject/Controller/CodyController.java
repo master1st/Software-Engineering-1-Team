@@ -15,6 +15,7 @@ import swEngineeringTeam1.closetProject.Dto.CodyRequestDto;
 import swEngineeringTeam1.closetProject.Dto.CodyReturnDto;
 import swEngineeringTeam1.closetProject.Entity.CodyEntity;
 import swEngineeringTeam1.closetProject.Entity.UserEntity;
+import swEngineeringTeam1.closetProject.Repository.ClothesRepository;
 import swEngineeringTeam1.closetProject.Service.CodyService;
 import swEngineeringTeam1.closetProject.Service.LoginService;
 
@@ -52,14 +53,20 @@ public class CodyController {
         return codyService.createCody( user, clothesList, file);
     }
 
-    @GetMapping("/mycody")
-    public Map<String, Object> getCody(HttpServletRequest request) {
+    @GetMapping(value = "/mycody")
+    public Map<String, Object> getCody(HttpServletRequest request) throws IOException {
         UserEntity user = loginService.getLoginUser(request);
         return codyService.getAllCody(user);
     }
 
+    @GetMapping("/mycody/clothes")
+    public Map<String,Object> getClothes(HttpServletRequest request) throws IOException {
+        UserEntity user = loginService.getLoginUser(request);
+        return codyService.getClothes(user);
+    }
+
     @GetMapping("/mycody/{codyNum}")
-    public Map<String,Object> getExistingCody(HttpServletRequest request, @PathVariable Long codyNum) {
+    public Map<String,Object> getExistingCody(HttpServletRequest request, @PathVariable Long codyNum) throws IOException {
         return codyService.getExistingCody(codyNum);
     }
 
@@ -76,9 +83,9 @@ public class CodyController {
 
     @Transactional
     @DeleteMapping("/mycody/{codyNum}")
-    public void deleteCody(HttpServletRequest request,@PathVariable Long codyNum) {
+    public Map<String,Object> deleteCody(HttpServletRequest request,@PathVariable Long codyNum) {
 
-        codyService.deleteCody(codyNum);
+        return codyService.deleteCody(codyNum);
     }
 
 

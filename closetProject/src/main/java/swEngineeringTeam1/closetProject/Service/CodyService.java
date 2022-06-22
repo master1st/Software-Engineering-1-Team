@@ -3,25 +3,33 @@ package swEngineeringTeam1.closetProject.Service;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
+import swEngineeringTeam1.closetProject.Dto.ClothesDto;
 import swEngineeringTeam1.closetProject.Dto.ClothesDtoForCody;
+import swEngineeringTeam1.closetProject.Dto.ClothesReturnDto;
 import swEngineeringTeam1.closetProject.Dto.CodyReturnDto;
 import swEngineeringTeam1.closetProject.Entity.ClothesEntity;
 import swEngineeringTeam1.closetProject.Entity.CodyEntity;
 import swEngineeringTeam1.closetProject.Entity.CodyId;
 import swEngineeringTeam1.closetProject.Entity.UserEntity;
+import swEngineeringTeam1.closetProject.Repository.ClothesRepository;
 import swEngineeringTeam1.closetProject.Repository.CodyRepository;
 import swEngineeringTeam1.closetProject.Repository.LoginRepository;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 @Service
@@ -32,8 +40,9 @@ public class CodyService {
     private final CodyRepository codyRepository;
     private final LoginRepository loginRepository;
     private final ServletContext servletContext;
+    private final ClothesRepository clothesRepository;
 
-    public Map<String, Object> getAllCody (UserEntity user) {
+    public Map<String, Object> getAllCody (UserEntity user) throws IOException {
         Map<String,Object> response = new HashMap<>();
         List<CodyEntity> codyEntities = codyRepository.findAllByCodyIdUserCode(user.getUserCode(), Sort.by("codyId.codyNum"));
 
@@ -43,23 +52,30 @@ public class CodyService {
        }
 
        else {
-           List<List<CodyReturnDto>> cody = new ArrayList<>();
+           List<List<CodyReturnDto>> result = new ArrayList<>();
            Long currentCodyNum = codyEntities.get(0).getCodyId().getCodyNum();
            ArrayList<CodyReturnDto> codyReturnDtos = new ArrayList<>();
 
            for (CodyEntity c : codyEntities) {
                if (currentCodyNum < c.getCodyId().getCodyNum()) {
-                   cody.add(codyReturnDtos);
+                   result.add(codyReturnDtos);
                    codyReturnDtos = new ArrayList<>();
                }
-               codyReturnDtos.add(new CodyReturnDto(c));
+               CodyReturnDto noImagedto = new CodyReturnDto(c);
+
+
+               noImagedto.setCodyImage(ImageRead(c.getCodyImage()));
+               System.out.println("c.getCodyImage() = " + c.getCodyImage());
+               System.out.println("noImagedto.getCodyImage() = " + noImagedto.getCodyImage());
+               codyReturnDtos.add(noImagedto);
+
                currentCodyNum= c.getCodyId().getCodyNum();
            }
-           cody.add(codyReturnDtos);
+           result.add(codyReturnDtos);
 
            response.put("success", true);
            response.put("message", "코디 불러오기가 완료되었습니다");
-           response.put("codyList", cody);
+           response.put("codyList", result);
        }
         return response;
     }
@@ -67,12 +83,11 @@ public class CodyService {
     public Map<String,Object> createCody(UserEntity user, List<ClothesDtoForCody> clothes, MultipartFile file) {
         Map<String,Object> response = new HashMap<>();
         try {
-            String loc = "default";
-           // loc = imageSave(file);
-            // Optional<UserEntity> mock = loginRepository.findById(1L);
 
             Long maxCodyNum = codyRepository.findMaxCodyNum();
             if (maxCodyNum == null) maxCodyNum = 0L; //if there is no cody
+
+            String loc = imageSave(file,maxCodyNum+1);
 
             for (ClothesDtoForCody c : clothes) {
                 ClothesEntity clothesEntity = new ClothesEntity(user, c);
@@ -90,7 +105,7 @@ public class CodyService {
         return response;
     }
 
-    public Map<String,Object> getExistingCody(Long codyNum){
+    public Map<String,Object> getExistingCody(Long codyNum) throws IOException {
         List<CodyEntity> codyEntities = codyRepository.findAllByCodyIdCodyNum(codyNum);
         Map<String,Object> response = new HashMap<>();
         if (codyEntities.isEmpty()) {
@@ -99,9 +114,13 @@ public class CodyService {
         }
         else {
             List<CodyReturnDto> cody = new ArrayList<>();
-            for (CodyEntity c : codyEntities) {
-                cody.add(new CodyReturnDto(c));
+            //for (CodyEntity c : codyEntities) {
+            for (int i=0;i<codyEntities.size();i++) {
+                cody.add(new CodyReturnDto(codyEntities.get(i)));
+                cody.get(i).setCodyImage(ImageRead(codyEntities.get(i).getCodyImage()));
+
             }
+
             response.put("success",true);
             response.put("message","코디 찾기에 성공하였습니다");
             response.put("cody",cody);
@@ -110,18 +129,33 @@ public class CodyService {
     }
 
     public void updateCody(UserEntity user, Long codyNum, List<ClothesDtoForCody> clothesList, MultipartFile file) throws IOException {
-        deleteCody(codyNum);
-        createCody(user, clothesList, file);
+        Map<String,Object> response = new HashMap<>();
+        try {
+           deleteCody(codyNum);
+           createCody(user, clothesList, file);
+           response.put("success",true);
+           response.put("message","코디 수정이 완료되었습니다");
+       }
+       catch (Exception e) {
+           e.printStackTrace();
+           response.put("success",false);
+           response.put("message","코디 수정이 실패하였습니다");
+       }
     }
 
     public Map<String, Object> deleteCody(Long codyNum) {
         Map<String,Object> response = new HashMap<>();
         try {
+            CodyEntity cody = codyRepository.findFirstByCodyIdCodyNum(codyNum);
+            String codyImageName = cody.getCodyImage();
+            File file = new File(getFilePath()+codyNum+"_"+codyImageName);
+            file.delete();
             codyRepository.deleteByCodyIdCodyNum(codyNum);
             response.put("success",true);
             response.put("message","코디 삭제가 완료되었습니다");
         }
         catch (Exception e) {
+            e.printStackTrace();
             response.put("success",false);
             response.put("message","코디 삭제에 실패하였습니다");
         }
@@ -129,12 +163,16 @@ public class CodyService {
 
     }
 
-    public String imageSave (MultipartFile file) throws IOException {
+    public String getFilePath() {
+        return servletContext.getRealPath("/")+"codyImage\\";
+    }
+
+    public String imageSave (MultipartFile file, Long codyNum) throws IOException {
         String originalFileName = file.getOriginalFilename();
-        System.out.println("here");
-        //String root= servletContext.getRealPath("/");
-      //  System.out.println(root);
-        File dest = new File("thisIsTest");
+
+        String root = getFilePath();
+
+        File dest = new File(root+codyNum+"_"+originalFileName);
         file.transferTo(dest);
         return originalFileName;
     }
@@ -143,6 +181,32 @@ public class CodyService {
         JSONParser parser = new JSONParser();
         JSONArray parse = (JSONArray) parser.parse(s);
         return parse;
+    }
+
+    public String  ImageRead (String fileName) throws IOException {
+        String filePath = getFilePath();
+        System.out.println(filePath+fileName);
+        System.out.println("외않되");
+        return filePath+fileName; //url 리턴
+    }
+
+    public Map<String, Object> getClothes (UserEntity user) throws IOException {
+        List<ClothesEntity> allByUser = clothesRepository.findAllByUser(user);
+        Map<String,Object> response = new HashMap<>();
+        List<ClothesReturnDto> dtos = new ArrayList<>();
+        if(allByUser.isEmpty()) {
+            response.put("success",true);
+            response.put("message","저장된 옷이 없습니다");
+        }
+        else {
+            response.put("success",true);
+            response.put("message","옷 가져오기에 성공했습니다");
+            for (ClothesEntity c : allByUser) {
+                dtos.add(new ClothesReturnDto(c,ImageRead(c.getClothesImage())));
+            }
+            response.put("clothes",dtos);
+        }
+        return response;
     }
 
 

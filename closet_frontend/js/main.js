@@ -1,3 +1,10 @@
+window.onload=function main(){
+    if(localStorage.getItem('sessionid')!=null){
+        document.getElementById("login").textContent="로그아웃";
+        document.getElementById("로그인").setAttribute("onclick",logout())
+    }
+console.log("메인실행");
+}
 
 const weather = document.querySelector(".weather");
 var requestOptions = {
