@@ -2,6 +2,8 @@ var j;
 // cody Get 요청 
 const mycody_1 = document.querySelector('.mycody_1');
 const mycody_2 = document.querySelector('.mycody_2');
+const cody_update = document.querySelector('.cody_update');
+const section_right = document.querySelector('.cody_num');
 fetch("../test.json")
 .then(response => {
    return response.json();
@@ -62,11 +64,13 @@ fetch("../test_post.json")
     img.setAttribute('ondragstart', 'dragStart(event);');
     img.setAttribute('draggable', 'true');
     img.setAttribute('ondragend', 'dragEnd(event)');
-    img.onclick= function() {
-      img_detail(img);
-    }
+    // img.onclick= function() {
+    //   img_detail(img);
+    // }
     box.appendChild(img);
   })
+})
+
   // console.log(jsondata.clothesList[0]);
   // for(i=0; i<jsondata.codyList.length; i++)
   // { 
@@ -82,9 +86,52 @@ fetch("../test_post.json")
   //   }
   //   box.appendChild(img);
   // }
+
+window.onload=function codyClick(){
+  const urlparam= new URL(location.href).searchParams;
+  const codynum = urlparam.get('alt');
+  fetch("../test.json")
+.then(response => {
+   return response.json();
+})  
+.then(jsondata => {
+  for(i=0; i<jsondata.codyList.length; i++)
+  {
+    if(codynum == jsondata.codyList[i][0].codyNum){
+  const img = document.createElement('img');
+  img.setAttribute('class' , 'mycody_img');
+  img.setAttribute('id' , jsondata.codyList[i][0].codyNum);
+  img.setAttribute('src' , jsondata.codyList[i][0].codyImage);
+  img.onclick= function() {
+    img_detail(img);
+  }
+  
+  cody_update.appendChild(img);
+}
+}
+  
 })
+  
+}
 
 
+
+
+function img_detail(item){
+  console.log(item);
+  //여기서 cody_update에다가 지금 받아온 이미지를 추가해야해
+    const img = document.createElement('img');
+    img.setAttribute('class' , 'mycody_img');
+    img.setAttribute('id' , item.id);
+    img.setAttribute('src' , item.src);
+    img.setAttribute('alt', item.id);
+    // img.onclick= function() {
+    //   img_delete(img);
+    // }
+    console.log(img);
+    mycody_2.append(img);
+    location.href = 'http://127.0.0.1:5500/html/createcody.html?alt='+img.alt
+  }
 
 // cody Create 요청 
 var input = document.querySelector('input[type="file"]')
@@ -155,28 +202,28 @@ fetch('http://localhost:8080/mycody', {
 
 
   //코디 Update 수정하기 요청
-  const cody_update = document.querySelector('.cody_update');
-  function img_detail(mycody_img){
-    fetch(`http://localhost:8080/mycody/${mycody_img.id}`, {
-    method: 'PUT',
-  })
-  .then(response => {
-  return response.json();
-  })
-  .then(data => {
-  data.map(item => {
-    const img = document.createElement('img');
-    img.setAttribute('class' , 'mycody_img');
-    img.setAttribute('id' , 'mycody_img');
-    img.setAttribute('src' , item.clothesImage);
-    img.onclick= function() {
-      img_delete(img);
-    }
-    cody_update.appendChild(img);
-    location.href = "http://127.0.0.1:5500/html/createcody.html";
-})   
-});
-}
+//   const cody_update = document.querySelector('.cody_update');
+//   function img_detail(mycody_img){
+//     fetch(`http://localhost:8080/mycody/${mycody_img.id}`, {
+//     method: 'PUT',
+//   })
+//   .then(response => {
+//   return response.json();
+//   })
+//   .then(data => {
+//   data.map(item => {
+//     const img = document.createElement('img');
+//     img.setAttribute('class' , 'mycody_img');
+//     img.setAttribute('id' , 'mycody_img');
+//     img.setAttribute('src' , item.clothesImage);
+//     img.onclick= function() {
+//       img_delete(img);
+//     }
+//     cody_update.appendChild(img);
+//     location.href = "http://127.0.0.1:5500/html/createcody.html";
+// })   
+// });
+// }
 
   //코디 Delete 삭제하기 요청 
   function img_delete(delete_img){
