@@ -139,10 +139,14 @@ img{
     cursor: pointer;
 }
 .cody_each{
-    width:300px;
+    width:500px;
     height: auto;
 }
 
+.closet_each{
+    width:300px;
+    height: auto;
+}
 .section_img_box{
     border: 1px solid black;
 }

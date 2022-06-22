@@ -1,0 +1,34 @@
+{
+    "success": true,
+    "codyList": [
+        [
+            {
+                "clothesImage": "../img/코디3.png",
+                "clothesId": 1,
+                "codyImage": "../img/코디2.png",
+                "codyNum": 1
+            },
+            {
+                "clothesImage": "../img/코디3.png",
+                "clothesId": 3,
+                "codyImage": "../img/코디2.png",
+                "codyNum": 1
+            }
+        ],
+        [
+            {
+                "clothesImage": "../img/코디3.png",
+                "clothesId": 1,
+                "codyImage": "../img/코디2.png",
+                "codyNum": 2
+            },
+            {
+                "clothesImage": "../img/코디3.png",
+                "clothesId": 2,
+                "codyImage": "../img/코디2.png",
+                "codyNum": 2
+            }
+        ]
+    ],
+        "message": "코디 불러오기가 완료되었습니다"
+}

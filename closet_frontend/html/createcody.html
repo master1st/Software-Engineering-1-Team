@@ -30,17 +30,63 @@
             <div class="br_tag"></div>
         </div>
     </nav>
-
+    <form action="/action_page.php">
+        <label for="cars">카테고리를 선택해주세요:</label>
+        <div class="top_box">
+            <span class="filter_box">
+                <div>
+                <ul class="top_select">
+                    <select name="weather" id="weather">
+                        <option value="spring">봄</option>
+                        <option value="summer">여름</option>
+                        <option value="autumn">가을</option>
+                        <option value="winter">겨울</option>
+                    </select>
+                    <select name="type" id="type">
+                        <option value="outer">아우터</option>
+                        <option value="top">상의내의</option>
+                        <option value="bottom">하의</option>
+                        <option value="shoes">신발</option>
+                    </select>
+                </ul>
+                <ul class="top_select">
+                    <select name="color" id="color">
+                        <option value="black">검은색</option>
+                        <option value="white">흰색</option>
+                        <option value="blue">파란색</option>
+                        <option value="brown">갈색</option>
+                    </select>
+                    <select name="texture" id="texture">
+                        <option value="cotton">면</option>
+                        <option value="cordroy">코듀로이</option>
+                        <option value="poly">폴리에스테르</option>
+                        <option value="rayon">레이온</option>
+                    </select>
+                </ul>
+                </div>
+                
+            </span>
+            <span><input class="filter_add" type="button" value="추가하기" onClick="location.href='createcloset.html'"></span>
+        </div>
+    </form>
     <div class="codyCreateBox">
     <section class="section_left">
+        <div class="section_img_box" style="overflow:scroll; width:700px; height:1000px;">
+            <ul class="section_center_top_ul">
+                <li class="box"><img class="closet_each" id="item" src="/img/코디1.png" ondragstart="dragStart(event);" draggable="true" ondragend="dragEnd(event)"></li>
+                <li class="box"><img class="closet_each" id="item" src="/img/코디1.png" ondragstart="dragStart(event);" draggable="true" ondragend="dragEnd(event)"></li>
+            </ul>
+            <ul class="section_center_top_ul">
+                <li class="box"><img class="closet_each" id="item" src="/img/코디1.png" ondragstart="dragStart(event);" draggable="true" ondragend="dragEnd(event)"></li>
+                <li class="box"><img class="closet_each" id="item" src="/img/코디1.png" ondragstart="dragStart(event);" draggable="true" ondragend="dragEnd(event)"></li>
+            </ul>
+        </div>
     <div class="section_left_top">
         <ul class="section_left_top_ul">
         <div class="section_left_top_ul_div">
-            <li><button class="new_reload"><i class="fa-solid fa-rotate-right"></i></button></li>
-            <li><button class="go_back"><i class="fa-solid fa-arrow-left-long"></i></button></li>
-            <li><button class="going_forward"><i class="fa-solid fa-arrow-right-long"></i></button></li>
+            <li><button class="new_reload"><strong>수정하기</strong></button></li>
+            <li><button class="go_back"><strong>삭제하기</strong></i></button></li>
         </div>
-            <li><button class="save"><i class="fa-solid fa-check"></i><strong>저장</strong></button></li>
         </ul>
         <!-- <img class="mycody_img"src="/img/마이코디1.png" alt=""> -->
         <!-- <input type="file" id="fileUpload" onchange="handleImageUpload(event)"/> -->
@@ -54,7 +100,8 @@
               <label>Select file to upload</label>
               <input type="file">
             </div>
-            <button type="submit">Convert</button>
+            <button type="submit" style="width:90px;
+            background-color: #FF28A7	;"><i class="fa-solid fa-check"></i><strong>저장</strong></button>
           </form>
 
          <!-- <form method="post" enctype="multipart/form-data">
@@ -69,12 +116,11 @@
 
         <div class="section_img_box">
         <ul class="section_center_top_ul">
-            <li><img class="cody_each" src="/img/코디1.png" alt=""></li>
-            <li><img class="cody_each" src="/img/코디1.png" alt=""></li>
+            <li class="cody_update"><img class="cody_each" src="/img/코디1.png" alt=""></li>
         </ul>
         <ul class="section_center_top_ul">
-            <li><img class="cody_each" src="/img/코디1.png" alt=""></li>
-            <li><img class="cody_each" src="/img/코디1.png" alt=""></li>
+            <li id="div1" ondrop="dropItem(event)" ondragover="allowDrop(event)" style="width:300px; height:300px;"></li>
+            <li id="div1" ondrop="dropItem(event)" ondragover="allowDrop(event)" style="width:300px; height:300px;"></li>
         </ul>
     </div>
     </div>
