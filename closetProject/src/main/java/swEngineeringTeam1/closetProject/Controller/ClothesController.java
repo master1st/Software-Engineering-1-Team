@@ -14,6 +14,7 @@ import swEngineeringTeam1.closetProject.Service.LoginService;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class ClothesController {
 
     //로그인 상태로 옷장 접속시 userCode를 통해 해당 사용자의 옷 데이터를 전송
     @GetMapping("/")
-    public List<ClothesReturnDto> readClothes(
+    public Map<String, Object> readClothes(
             @RequestParam(required = false) String season,
             @RequestParam(required = false) String color,
             @RequestParam(required = false) String type,
@@ -37,7 +38,7 @@ public class ClothesController {
     }
 
     @PostMapping("/")
-    public String createClothes (@RequestParam String jsonClothesDto, @RequestPart MultipartFile file, HttpServletRequest request) throws IOException {
+    public Map<String, Object> createClothes (@RequestParam String jsonClothesDto, @RequestPart MultipartFile file, HttpServletRequest request) throws IOException {
         UserEntity user = loginService.getLoginUser(request);
         ObjectMapper mapper = new ObjectMapper();
         ClothesDto clothesDto = null;
@@ -50,13 +51,13 @@ public class ClothesController {
     }
 
     @GetMapping("/{id}")
-    public ClothesReturnDto updateClothes(@PathVariable Long id, HttpServletRequest request){
+    public Map<String, Object> updateClothes(@PathVariable Long id, HttpServletRequest request){
         UserEntity user = loginService.getLoginUser(request);
         return clothesService.updateClothes(id,user);
     }
 
     @PutMapping("/{id}")
-    public String updateClothes(@PathVariable Long id, @RequestParam String jsonClothesDto, @RequestPart MultipartFile file) throws IOException {
+    public Map<String, Object> updateClothes(@PathVariable Long id, @RequestParam String jsonClothesDto, @RequestPart MultipartFile file) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         ClothesDto clothesDto = null;
         try {
@@ -68,9 +69,8 @@ public class ClothesController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteClothes(@PathVariable Long id, HttpServletRequest request){
+    public Map<String, Object> deleteClothes(@PathVariable Long id, HttpServletRequest request){
         UserEntity user = loginService.getLoginUser(request);
-        clothesService.deleteClothes(id,user);
-        return "삭제 성공";
+        return clothesService.deleteClothes(id,user);
     }
 }

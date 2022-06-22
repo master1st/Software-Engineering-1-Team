@@ -14,7 +14,9 @@ import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -22,18 +24,24 @@ public class ClothesService {
     private final ClothesRepository clothesRepository;
     private final ServletContext servletContext;
 
-    public String createClothes(ClothesDto clothesDto, MultipartFile file, UserEntity user) throws IOException{
+    public Map<String, Object> createClothes(ClothesDto clothesDto, MultipartFile file, UserEntity user) throws IOException{
+        Map<String,Object> response = new HashMap<>();
         try {
             String loc = imageSave(file,clothesRepository.findMaxclothesNum()+1);
             clothesRepository.save(new ClothesEntity(user,loc,clothesDto));
-            return "저장 성공";
+            response.put("success",true);
+            response.put("message","저장 성공");
+            return response;
         }
         catch (Exception e){
-            return "저장 실패";
+            response.put("success",false);
+            response.put("message","예외 발생");
+            return response;
         }
     }
 
-    public List<ClothesReturnDto> readClothes(UserEntity user, String season, String color, String type, String material) throws IOException {
+    public Map<String, Object> readClothes(UserEntity user, String season, String color, String type, String material) throws IOException {
+        Map<String,Object> response = new HashMap<>();
         List<ClothesEntity> clothesEntityList;
         if(season==null &&
             color==null &&
@@ -90,21 +98,27 @@ public class ClothesService {
             ClothesReturnDto clothesReturnDto = new ClothesReturnDto(c,getFilePath()+c.getClothesImage());
             clothesReturnDtoList.add(clothesReturnDto);
         }
-        return clothesReturnDtoList;
+        response.put("success",true);
+        response.put("clothesList",clothesReturnDtoList);
+        return response;
     }
-    public ClothesReturnDto updateClothes(Long clothesId, UserEntity user){
+    public Map<String, Object> updateClothes(Long clothesId, UserEntity user){
+        Map<String,Object> response = new HashMap<>();
         ClothesEntity clothes = clothesRepository.findById(clothesId).orElse(null);
         ClothesReturnDto clothesReturnDto = new ClothesReturnDto(clothes,getFilePath()+clothes.getClothesImage());
         //수정하려는 옷과 접속한 user의 정보가 일치하지 않으면 null 반환
         if (clothes.getUser() != user ){
-            return null;
+            response.put("success",false);
         }
         else {
-            return clothesReturnDto;
+            response.put("success",true);
+            response.put("clothes",clothesReturnDto);
         }
+        return response;
     }
 
-    public String finUpdateClothes(Long clothesId, MultipartFile newImage, ClothesDto clothesDto) throws IOException{
+    public Map<String,Object> finUpdateClothes(Long clothesId, MultipartFile newImage, ClothesDto clothesDto) throws IOException{
+        Map<String,Object> response = new HashMap<>();
         ClothesEntity clothes = clothesRepository.findById(clothesId).orElse(null);
         String clothesImageName = clothes.getClothesImage();
         File file = new File(getFilePath()+clothesImageName);
@@ -117,25 +131,31 @@ public class ClothesService {
             clothes.setType(clothesDto.getType());
             clothes.setMaterial(clothesDto.getMaterial());
             clothesRepository.save(clothes);
-            return "업데이트 성공";
+            response.put("success",true);
+            return response;
         }
         catch (Exception e){
-            return "업데이트 실패";
+            response.put("success",false);
+            return response;
         }
     }
 
-    public String deleteClothes(Long clothesId, UserEntity user){
+    public Map<String, Object> deleteClothes(Long clothesId, UserEntity user){
+        Map<String,Object> response = new HashMap<>();
         ClothesEntity clothes= clothesRepository.findById(clothesId).orElse(null);
         if (clothes.getUser() != user ) {
-            return "권한이 없습니다.";
+            response.put("success",false);
+            response.put("message","권한이 없습니다.");
         }
         else{
             String clothesImageName = clothes.getClothesImage();
             File file = new File(getFilePath()+clothesImageName);
             file.delete();
             clothesRepository.delete(clothes);
-            return "삭제 성공";
+            response.put("success",true);
+            response.put("message","삭제 성공");
         }
+        return response;
     }
 
     public String getFilePath() {
