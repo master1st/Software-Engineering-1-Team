@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../css/createcloset.css">
+    <link rel="stylesheet" href="../css/closetinfo.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
 </head>
 
@@ -34,36 +34,33 @@
                     <span class="filter_box">
                         
                         <ul class="top_select">
-                            <select name="weather" id="weather">
-                                <option value="spring">봄</option>
-                                <option value="summer">여름</option>
-                                <option value="autumn">가을</option>
-                                <option value="winter">겨울</option>
+                            <select name="cars" id="cars">
+                                <option value="volvo">봄</option>
+                                <option value="saab">여름</option>
+                                <option value="opel">가을</option>
+                                <option value="audi">겨울</option>
                             </select>
-                            <select name="type" id="type">
-                                <option value="outer">아우터</option>
-                                <option value="top">상의내의</option>
-                                <option value="bottom">하의</option>
-                                <option value="shoes">신발</option>
+                            <select name="cars" id="cars">
+                                <option value="volvo">아우터</option>
+                                <option value="saab">상의내의</option>
+                                <option value="opel">하의</option>
+                                <option value="audi">신발</option>
                             </select>
-                        </ul>
-                        <ul class="top_select">
-                            <select name="color" id="color">
-                                <option value="black">검은색</option>
-                                <option value="white">흰색</option>
-                                <option value="blue">파란색</option>
-                                <option value="brown">갈색</option>
+                            <select name="cars" id="cars">
+                                <option value="volvo">검은색</option>
+                                <option value="saab">흰색</option>
+                                <option value="opel">파란색</option>
+                                <option value="audi">갈색</option>
                             </select>
-                            <select name="material" id="material">
-                                <option value="cotton">면</option>
-                                <option value="cordroy">코듀로이</option>
-                                <option value="poly">폴리에스테르</option>
-                                <option value="rayon">레이온</option>
+                            <select name="cars" id="cars">
+                                <option value="volvo">면</option>
+                                <option value="saab">코듀로이</option>
+                                <option value="opel">폴리에스테르</option>
+                                <option value="audi">레이온</option>
                             </select>
                         </ul>
 
                     </span>
-                    <span><input class="filter_add" type="submit" value="추가하기" onclick="addfile()"></span>
                 </div>
             </form>
         </span>
@@ -71,7 +68,7 @@
             <ul class="img_list">
                 <li>
                     
-                    <p class="sub_explain">옷 미리보기</p>
+                    <p class="sub_explain">등록된 옷 사진</p>
                 </li>
                 <li>
                     <span id="add">
@@ -86,7 +83,11 @@
                 <input class="UploadPic" type="file" value="사진 업로드" accept="image/*" onchange="loadFile(this)">
             </form>
             <div class="image-show" id="image-show"></div>
+            <span><input class="filter_add" type="submit" value="수정하기" onclick="updatefile()"></span>
+            <span><input class="filter_add" type="submit" value="삭제하기" onclick="deletefile()"></span>
+                
         </span>
+        
     </section>
         <div class="br_tagb"></div>
     <footer>
@@ -95,7 +96,7 @@
             <li class="f_item">about</li>
         </ul>
     </footer>
-    <script src="/js/createcloset.js"></script>
+    <script src="/js/closetinfo.js"></script>
 </body>
 
 </html>
