@@ -13,6 +13,7 @@ import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
 import swEngineeringTeam1.closetProject.Dto.ClothesDto;
 import swEngineeringTeam1.closetProject.Dto.ClothesDtoForCody;
+import swEngineeringTeam1.closetProject.Dto.ClothesReturnDto;
 import swEngineeringTeam1.closetProject.Dto.CodyReturnDto;
 import swEngineeringTeam1.closetProject.Entity.ClothesEntity;
 import swEngineeringTeam1.closetProject.Entity.CodyEntity;
@@ -189,10 +190,10 @@ public class CodyService {
         return filePath+fileName; //url 리턴
     }
 
-    public Map<String, Object> getClothes (UserEntity user) {
+    public Map<String, Object> getClothes (UserEntity user) throws IOException {
         List<ClothesEntity> allByUser = clothesRepository.findAllByUser(user);
         Map<String,Object> response = new HashMap<>();
-        List<ClothesDto> dtos = new ArrayList<>();
+        List<ClothesReturnDto> dtos = new ArrayList<>();
         if(allByUser.isEmpty()) {
             response.put("success",true);
             response.put("message","저장된 옷이 없습니다");
@@ -201,13 +202,12 @@ public class CodyService {
             response.put("success",true);
             response.put("message","옷 가져오기에 성공했습니다");
             for (ClothesEntity c : allByUser) {
-                dtos.add(new ClothesDto(c.getUser().getUserCode(),c.getClothesImage(),c.getSeason(),c.getColor(),c.getType(),c.getMaterial()));
+                dtos.add(new ClothesReturnDto(c,ImageRead(c.getClothesImage())));
             }
             response.put("clothes",dtos);
         }
         return response;
     }
-
 
 
 }
