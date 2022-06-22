@@ -60,6 +60,8 @@ public class CodyService {
 
 
                noImagedto.setCodyImage(ImageRead(c.getCodyImage()));
+               System.out.println("c.getCodyImage() = " + c.getCodyImage());
+               System.out.println("noImagedto.getCodyImage() = " + noImagedto.getCodyImage());
                codyReturnDtos.add(noImagedto);
 
                currentCodyNum= c.getCodyId().getCodyNum();
@@ -98,7 +100,7 @@ public class CodyService {
         return response;
     }
 
-    public Map<String,Object> getExistingCody(Long codyNum){
+    public Map<String,Object> getExistingCody(Long codyNum) throws IOException {
         List<CodyEntity> codyEntities = codyRepository.findAllByCodyIdCodyNum(codyNum);
         Map<String,Object> response = new HashMap<>();
         if (codyEntities.isEmpty()) {
@@ -107,9 +109,13 @@ public class CodyService {
         }
         else {
             List<CodyReturnDto> cody = new ArrayList<>();
-            for (CodyEntity c : codyEntities) {
-                cody.add(new CodyReturnDto(c));
+            //for (CodyEntity c : codyEntities) {
+            for (int i=0;i<codyEntities.size();i++) {
+                cody.add(new CodyReturnDto(codyEntities.get(i)));
+                cody.get(i).setCodyImage(ImageRead(codyEntities.get(i).getCodyImage()));
+
             }
+
             response.put("success",true);
             response.put("message","코디 찾기에 성공하였습니다");
             response.put("cody",cody);
@@ -175,8 +181,8 @@ public class CodyService {
     public String  ImageRead (String fileName) throws IOException {
         String filePath = getFilePath();
         System.out.println(filePath+fileName);
-        FileInputStream fis = new FileInputStream(filePath+fileName);
-        return Base64Utils.encodeToString(fis.readAllBytes()); //base64로 인코딩한 이미지 정보를 리턴
+        System.out.println("외않되");
+        return filePath+fileName; //url 리턴
     }
 
 
