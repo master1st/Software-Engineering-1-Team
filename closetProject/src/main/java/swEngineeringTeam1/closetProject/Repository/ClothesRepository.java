@@ -1,6 +1,7 @@
 package swEngineeringTeam1.closetProject.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import swEngineeringTeam1.closetProject.Entity.ClothesEntity;
 import swEngineeringTeam1.closetProject.Entity.UserEntity;
@@ -26,4 +27,6 @@ public interface ClothesRepository extends JpaRepository<ClothesEntity, Long> {
     List<ClothesEntity> findAllByUserAndType(UserEntity entity, String type);
     List<ClothesEntity> findAllByUserAndMaterial(UserEntity entity, String material);
 
+    @Query(value = "SELECT MAX(clothesId) FROM clothes", nativeQuery = true)
+    Long findMaxclothesNum();
 }

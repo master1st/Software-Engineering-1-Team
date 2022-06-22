@@ -3,7 +3,6 @@ package swEngineeringTeam1.closetProject.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
 import swEngineeringTeam1.closetProject.Dto.ClothesDto;
 import swEngineeringTeam1.closetProject.Dto.ClothesReturnDto;
@@ -13,7 +12,6 @@ import swEngineeringTeam1.closetProject.Repository.ClothesRepository;
 
 import javax.servlet.ServletContext;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +24,7 @@ public class ClothesService {
 
     public String createClothes(ClothesDto clothesDto, MultipartFile file, UserEntity user) throws IOException{
         try {
-            String loc = imageSave(file);
+            String loc = imageSave(file,clothesRepository.findMaxclothesNum()+1);
             clothesRepository.save(new ClothesEntity(user,loc,clothesDto));
             return "저장 성공";
         }
@@ -112,7 +110,7 @@ public class ClothesService {
         File file = new File(getFilePath()+clothesImageName);
         file.delete();
         try {
-            String loc = imageSave(newImage);
+            String loc = imageSave(newImage,clothesId);
             clothes.setClothesImage(loc);
             clothes.setColor(clothesDto.getColor());
             clothes.setSeason(clothesDto.getSeason());
@@ -133,7 +131,7 @@ public class ClothesService {
         }
         else{
             String clothesImageName = clothes.getClothesImage();
-            File file = new File(getFilePath()+clothesId+"_"+clothesImageName);
+            File file = new File(getFilePath()+clothesImageName);
             file.delete();
             clothesRepository.delete(clothes);
             return "삭제 성공";
@@ -144,21 +142,13 @@ public class ClothesService {
         return servletContext.getRealPath("/")+"clothesImage/";
     }
 
-    public String imageSave (MultipartFile file) throws IOException {
+    public String imageSave (MultipartFile file,Long clothesId) throws IOException {
         String originalFileName = file.getOriginalFilename();
 
         String root = getFilePath();
-        System.out.println(root+originalFileName);
-        File dest = new File(root+originalFileName);
+        File dest = new File(root+clothesId+"_"+originalFileName);
         file.transferTo(dest);
-        return originalFileName;
-    }
-
-    public String ImageRead (String fileName) throws IOException {
-        String filePath = getFilePath();
-        System.out.println(filePath+fileName);
-        FileInputStream fis = new FileInputStream(filePath+fileName);
-        return Base64Utils.encodeToString(fis.readAllBytes()); //base64로 인코딩한 이미지 정보를 리턴
+        return clothesId+"_"+originalFileName;
     }
 
 }
