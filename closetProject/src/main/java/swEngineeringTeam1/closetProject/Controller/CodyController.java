@@ -41,9 +41,10 @@ public class CodyController {
 
     @PostMapping(value = "/mycody", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Map<String,Object> createCody(@RequestParam String jsonString, @RequestParam(required = false) MultipartFile file, HttpServletRequest request,
-                                         @RequestParam Long userCode) {
+                                         @RequestParam String userCode) {
         //UserEntity user = loginService.getLoginUser(request);
-        UserEntity user = loginRepository.findById(userCode).get();
+        Long usercode = Long.parseLong(userCode);
+        UserEntity user = loginRepository.findById(usercode).get();
 
 
         ObjectMapper mapper = new ObjectMapper();
@@ -59,30 +60,34 @@ public class CodyController {
     }
 
     @GetMapping(value = "/mycody")
-    public Map<String, Object> getCody(HttpServletRequest request, @RequestParam Long userCode) throws IOException {
+    public Map<String, Object> getCody(HttpServletRequest request, @RequestParam String userCode) throws IOException {
         //UserEntity user = loginService.getLoginUser(request);
-        UserEntity user = loginRepository.findById(userCode).get();
+        Long usercode = Long.parseLong(userCode);
+        UserEntity user = loginRepository.findById(usercode).get();
         return codyService.getAllCody(user);
     }
 
     @GetMapping("/mycody/clothes")
-    public Map<String,Object> getClothes(HttpServletRequest request,  @RequestParam Long userCode) throws IOException {
+    public Map<String,Object> getClothes(HttpServletRequest request,  @RequestParam String userCode) throws IOException {
        // UserEntity user = loginService.getLoginUser(request);
-        UserEntity user = loginRepository.findById(userCode).get();
+        Long usercode = Long.parseLong(userCode);
+        UserEntity user = loginRepository.findById(usercode).get();
         return codyService.getClothes(user);
     }
 
     @GetMapping("/mycody/{codyNum}")
-    public Map<String,Object> getExistingCody( @RequestParam Long userCode,HttpServletRequest request, @PathVariable Long codyNum) throws IOException {
+    public Map<String,Object> getExistingCody( @RequestParam String userCode,HttpServletRequest request, @PathVariable Long codyNum) throws IOException {
         UserEntity user = loginRepository.findById(userCode).get();
+        Long usercode = Long.parseLong(userCode);
         return codyService.getExistingCody(codyNum);
     }
 
     @Transactional
     @PutMapping(value = "/mycody/{codyNum}", consumes =  MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void updateCody( @RequestParam Long userCode,HttpServletRequest request, @PathVariable Long codyNum, @RequestParam  String jsonString, @RequestParam(required = false) MultipartFile file) throws IOException {
+    public void updateCody( @RequestParam String userCode,HttpServletRequest request, @PathVariable Long codyNum, @RequestParam  String jsonString, @RequestParam(required = false) MultipartFile file) throws IOException {
         //UserEntity user = loginService.getLoginUser(request);
-        UserEntity user = loginRepository.findById(userCode).get();
+        Long usercode = Long.parseLong(userCode);
+        UserEntity user = loginRepository.findById(usercode).get();
         ObjectMapper mapper = new ObjectMapper();
         CodyRequestDto codyRequestDto = mapper.readValue(jsonString, CodyRequestDto.class);
         List<ClothesDtoForCody> clothesList = codyRequestDto.getClothesList();
@@ -91,8 +96,9 @@ public class CodyController {
 
     @Transactional
     @DeleteMapping("/mycody/{codyNum}")
-    public Map<String,Object> deleteCody( @RequestParam Long userCode,HttpServletRequest request,@PathVariable Long codyNum) {
-        UserEntity user = loginRepository.findById(userCode).get();
+    public Map<String,Object> deleteCody( @RequestParam String userCode,HttpServletRequest request,@PathVariable Long codyNum) {
+        Long usercode = Long.parseLong(userCode);
+        UserEntity user = loginRepository.findById(usercode).get();
         return codyService.deleteCody(codyNum);
     }
 

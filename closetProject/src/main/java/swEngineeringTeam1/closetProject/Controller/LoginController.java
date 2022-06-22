@@ -42,11 +42,12 @@ public class LoginController {
 
     @Transactional
     @PostMapping("/deleteUser")
-    public  Map<String,Object> deleteUser (@RequestParam Long userCode,HttpServletRequest request) {
+    public  Map<String,Object> deleteUser (@RequestParam String userCode,HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate();
       //  UserEntity loginUser = loginService.getLoginUser(request);
-        UserEntity loginUser = loginRepository.findById(userCode).get();
+        Long usercode = Long.parseLong(userCode);
+        UserEntity loginUser = loginRepository.findById(usercode).get();
         return loginService.deleteUser(loginUser.getUserCode());
 
     }
