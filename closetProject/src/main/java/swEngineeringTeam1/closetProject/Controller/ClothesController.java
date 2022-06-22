@@ -3,6 +3,7 @@ package swEngineeringTeam1.closetProject.Controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import swEngineeringTeam1.closetProject.Dto.ClothesDto;
@@ -24,6 +25,10 @@ public class ClothesController {
     private final ClothesService clothesService;
     private final LoginService loginService;
 
+    public UserEntity getUser(Long userCode){
+        return loginService.getUser(userCode);
+    }
+
     //로그인 상태로 옷장 접속시 userCode를 통해 해당 사용자의 옷 데이터를 전송
     @GetMapping("/")
     public Map<String, Object> readClothes(
@@ -31,17 +36,19 @@ public class ClothesController {
             @RequestParam(required = false) String color,
             @RequestParam(required = false) String type,
             @RequestParam(required = false) String material,
-            HttpServletRequest request) throws IOException {
+            @RequestParam String userCode) throws IOException {
         //Long userCode = getUserCodeFromRequest(request);
-        UserEntity user = loginService.getLoginUser(request);
+        Long longUserCode = Long.parseLong(userCode);
+        UserEntity user = getUser(longUserCode);
         return clothesService.readClothes(user, season, color, type, material);
     }
 
     @PostMapping("/")
-    public Map<String, Object> createClothes (@RequestParam String jsonClothesDto, @RequestPart MultipartFile file, HttpServletRequest request) throws IOException {
-        UserEntity user = loginService.getLoginUser(request);
+    public Map<String, Object> createClothes (@RequestParam String jsonClothesDto, @RequestParam String userCode, @RequestPart MultipartFile file) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         ClothesDto clothesDto = null;
+        Long longUserCode = Long.parseLong(userCode);
+        UserEntity user= getUser(longUserCode);
         try {
             clothesDto = mapper.readValue(jsonClothesDto, ClothesDto.class);
         } catch (JsonProcessingException e) {
@@ -51,8 +58,9 @@ public class ClothesController {
     }
 
     @GetMapping("/{id}")
-    public Map<String, Object> updateClothes(@PathVariable Long id, HttpServletRequest request){
-        UserEntity user = loginService.getLoginUser(request);
+    public Map<String, Object> updateClothes(@PathVariable Long id, @RequestParam String userCode){
+        Long longUserCode = Long.parseLong(userCode);
+        UserEntity user = getUser(longUserCode);
         return clothesService.updateClothes(id,user);
     }
 
@@ -69,8 +77,9 @@ public class ClothesController {
     }
 
     @DeleteMapping("/{id}")
-    public Map<String, Object> deleteClothes(@PathVariable Long id, HttpServletRequest request){
-        UserEntity user = loginService.getLoginUser(request);
+    public Map<String, Object> deleteClothes(@PathVariable Long id, @RequestParam String userCode){
+        Long longUserCode = Long.parseLong(userCode);
+        UserEntity user = getUser(longUserCode);
         return clothesService.deleteClothes(id,user);
     }
 }
