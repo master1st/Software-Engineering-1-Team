@@ -60,7 +60,7 @@ public class CodyController {
     }
 
     @GetMapping("/mycody/clothes")
-    public Map<String,Object> getClothes(HttpServletRequest request) {
+    public Map<String,Object> getClothes(HttpServletRequest request) throws IOException {
         UserEntity user = loginService.getLoginUser(request);
         return codyService.getClothes(user);
     }
