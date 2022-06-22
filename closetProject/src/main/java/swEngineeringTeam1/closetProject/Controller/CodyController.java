@@ -16,6 +16,7 @@ import swEngineeringTeam1.closetProject.Dto.CodyReturnDto;
 import swEngineeringTeam1.closetProject.Entity.CodyEntity;
 import swEngineeringTeam1.closetProject.Entity.UserEntity;
 import swEngineeringTeam1.closetProject.Repository.ClothesRepository;
+import swEngineeringTeam1.closetProject.Repository.LoginRepository;
 import swEngineeringTeam1.closetProject.Service.CodyService;
 import swEngineeringTeam1.closetProject.Service.LoginService;
 
@@ -36,10 +37,15 @@ import java.util.Optional;
 public class CodyController {
     private final CodyService codyService;
     private final LoginService loginService;
+    private final LoginRepository loginRepository;
 
     @PostMapping(value = "/mycody", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Map<String,Object> createCody(@RequestParam String jsonString, @RequestParam(required = false) MultipartFile file, HttpServletRequest request) {
-        UserEntity user = loginService.getLoginUser(request);
+    public Map<String,Object> createCody(@RequestParam String jsonString, @RequestParam(required = false) MultipartFile file, HttpServletRequest request,
+                                         @RequestParam String userCode) {
+        //UserEntity user = loginService.getLoginUser(request);
+        Long usercode = Long.parseLong(userCode);
+        UserEntity user = loginRepository.findById(usercode).get();
+
 
         ObjectMapper mapper = new ObjectMapper();
         CodyRequestDto codyRequestDto = null;
@@ -54,27 +60,34 @@ public class CodyController {
     }
 
     @GetMapping(value = "/mycody")
-    public Map<String, Object> getCody(HttpServletRequest request) throws IOException {
-        UserEntity user = loginService.getLoginUser(request);
+    public Map<String, Object> getCody(HttpServletRequest request, @RequestParam String userCode) throws IOException {
+        //UserEntity user = loginService.getLoginUser(request);
+        Long usercode = Long.parseLong(userCode);
+        UserEntity user = loginRepository.findById(usercode).get();
         return codyService.getAllCody(user);
     }
 
     @GetMapping("/mycody/clothes")
-    public Map<String,Object> getClothes(HttpServletRequest request) throws IOException {
-        UserEntity user = loginService.getLoginUser(request);
+    public Map<String,Object> getClothes(HttpServletRequest request,  @RequestParam String userCode) throws IOException {
+       // UserEntity user = loginService.getLoginUser(request);
+        Long usercode = Long.parseLong(userCode);
+        UserEntity user = loginRepository.findById(usercode).get();
         return codyService.getClothes(user);
     }
 
     @GetMapping("/mycody/{codyNum}")
-    public Map<String,Object> getExistingCody(HttpServletRequest request, @PathVariable Long codyNum) throws IOException {
+    public Map<String,Object> getExistingCody( @RequestParam String userCode,HttpServletRequest request, @PathVariable Long codyNum) throws IOException {
+        UserEntity user = loginRepository.findById(userCode).get();
+        Long usercode = Long.parseLong(userCode);
         return codyService.getExistingCody(codyNum);
     }
 
     @Transactional
     @PutMapping(value = "/mycody/{codyNum}", consumes =  MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void updateCody(HttpServletRequest request, @PathVariable Long codyNum, @RequestParam  String jsonString, @RequestParam(required = false) MultipartFile file) throws IOException {
-        UserEntity user = loginService.getLoginUser(request);
-
+    public void updateCody( @RequestParam String userCode,HttpServletRequest request, @PathVariable Long codyNum, @RequestParam  String jsonString, @RequestParam(required = false) MultipartFile file) throws IOException {
+        //UserEntity user = loginService.getLoginUser(request);
+        Long usercode = Long.parseLong(userCode);
+        UserEntity user = loginRepository.findById(usercode).get();
         ObjectMapper mapper = new ObjectMapper();
         CodyRequestDto codyRequestDto = mapper.readValue(jsonString, CodyRequestDto.class);
         List<ClothesDtoForCody> clothesList = codyRequestDto.getClothesList();
@@ -83,8 +96,9 @@ public class CodyController {
 
     @Transactional
     @DeleteMapping("/mycody/{codyNum}")
-    public Map<String,Object> deleteCody(HttpServletRequest request,@PathVariable Long codyNum) {
-
+    public Map<String,Object> deleteCody( @RequestParam String userCode,HttpServletRequest request,@PathVariable Long codyNum) {
+        Long usercode = Long.parseLong(userCode);
+        UserEntity user = loginRepository.findById(usercode).get();
         return codyService.deleteCody(codyNum);
     }
 

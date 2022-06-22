@@ -28,13 +28,13 @@
     </nav>
     <section class="main_section">
         <span class="section_top">
-            <form action="/action_page.php">
+            <form class = "categoryform">
                 <label for="category">카테고리를 선택해주세요:</label>
                 <div class="top_box">
                     <span class="filter_box">
                         
                         <ul class="top_select">
-                            <select name="weather" id="weather">
+                            <select name="season" id="season">
                                 <option value="spring">봄</option>
                                 <option value="summer">여름</option>
                                 <option value="autumn">가을</option>
@@ -63,10 +63,11 @@
                         </ul>
 
                     </span>
-                    <span><input class="filter_add" type="submit" value="추가하기" onclick="addfile()"></span>
+                    
                 </div>
             </form>
         </span>
+        <span><input class="filter_add" type="submit" value="추가하기" onclick="addfile()"></span>
         <span class="section_box">
             <ul class="img_list">
                 <li>
@@ -83,7 +84,7 @@
                 <label for="사진 업로드"></label>
             </div>
             <form method="post" enctype="multipart/form-data">
-                <input class="UploadPic" type="file" value="사진 업로드" accept="image/*" onchange="loadFile(this)">
+                <input class="UploadPic" id="UploadPic" type="file" value="사진 업로드" accept="image/*" onchange="loadFile(this)">
             </form>
             <div class="image-show" id="image-show"></div>
         </span>

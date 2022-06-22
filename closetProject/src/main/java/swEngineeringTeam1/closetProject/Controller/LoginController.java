@@ -1,11 +1,9 @@
 package swEngineeringTeam1.closetProject.Controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import swEngineeringTeam1.closetProject.Dto.LoginAndSignupDto;
+import swEngineeringTeam1.closetProject.Repository.LoginRepository;
 import swEngineeringTeam1.closetProject.Service.LoginService;
 import swEngineeringTeam1.closetProject.Entity.UserEntity;
 
@@ -21,6 +19,7 @@ import java.util.Optional;
 public class LoginController {
 
     private final LoginService loginService;
+    private final LoginRepository loginRepository;
 
     @PostMapping("/login")
     public Map<String, Object> login (@RequestBody LoginAndSignupDto loginAndSignupDto, HttpSession session) {
@@ -43,10 +42,12 @@ public class LoginController {
 
     @Transactional
     @PostMapping("/deleteUser")
-    public  Map<String,Object> deleteUser (HttpServletRequest request) {
+    public  Map<String,Object> deleteUser (@RequestParam String userCode,HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate();
-        UserEntity loginUser = loginService.getLoginUser(request);
+      //  UserEntity loginUser = loginService.getLoginUser(request);
+        Long usercode = Long.parseLong(userCode);
+        UserEntity loginUser = loginRepository.findById(usercode).get();
         return loginService.deleteUser(loginUser.getUserCode());
 
     }

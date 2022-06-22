@@ -34,12 +34,14 @@ public class LoginService {
             String realPassword = userEntity.get().getPassword();
             if (realPassword.equals(loginAndSignupDto.getPassword())) {//login success
 
-                String sessionId = UUID.randomUUID().toString(); //random sessionId
+             //   String sessionId = UUID.randomUUID().toString(); //random sessionId
 
-                session.setAttribute(sessionId, userEntity.get().getUserCode());
+            //     session.setAttribute(sessionId, userEntity.get().getUserCode());
+                session.setAttribute("sessionId",userEntity.get().getUserCode());
                 response.put("success", true);
                 response.put("message", "로그인에 성공하였습니다");
-                response.put("sessionId",sessionId);
+                response.put("userCode", userEntity.get().getUserCode());
+            //    response.put("sessionId",sessionId);
 
             } else {
                 response.put("success", false);
