@@ -8,14 +8,13 @@ import swEngineeringTeam1.closetProject.Entity.UserEntity;
 @Getter
 @Setter
 public class ClothesDto {
-    private String clothesImage;
+    private Long clothesId;
     private String season;
     private String color;
     private String type;
     private String material;
 
-    public ClothesDto(String clothesImage, String season, String color, String type, String material){
-        this.clothesImage=clothesImage;
+    public ClothesDto(String season, String color, String type, String material){
         this.season=season;
         this.color=color;
         this.type=type;

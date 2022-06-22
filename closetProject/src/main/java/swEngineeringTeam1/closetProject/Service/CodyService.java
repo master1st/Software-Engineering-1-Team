@@ -179,5 +179,4 @@ public class CodyService {
         return Base64Utils.encodeToString(fis.readAllBytes()); //base64로 인코딩한 이미지 정보를 리턴
     }
 
-
 }
