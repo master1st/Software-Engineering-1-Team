@@ -15,6 +15,7 @@ import swEngineeringTeam1.closetProject.Dto.CodyRequestDto;
 import swEngineeringTeam1.closetProject.Dto.CodyReturnDto;
 import swEngineeringTeam1.closetProject.Entity.CodyEntity;
 import swEngineeringTeam1.closetProject.Entity.UserEntity;
+import swEngineeringTeam1.closetProject.Repository.ClothesRepository;
 import swEngineeringTeam1.closetProject.Service.CodyService;
 import swEngineeringTeam1.closetProject.Service.LoginService;
 
@@ -56,6 +57,12 @@ public class CodyController {
     public Map<String, Object> getCody(HttpServletRequest request) throws IOException {
         UserEntity user = loginService.getLoginUser(request);
         return codyService.getAllCody(user);
+    }
+
+    @GetMapping("/mycody/clothes")
+    public Map<String,Object> getClothes(HttpServletRequest request) {
+        UserEntity user = loginService.getLoginUser(request);
+        return codyService.getClothes(user);
     }
 
     @GetMapping("/mycody/{codyNum}")

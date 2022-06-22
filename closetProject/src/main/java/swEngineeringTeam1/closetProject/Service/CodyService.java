@@ -11,16 +11,19 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
+import swEngineeringTeam1.closetProject.Dto.ClothesDto;
 import swEngineeringTeam1.closetProject.Dto.ClothesDtoForCody;
 import swEngineeringTeam1.closetProject.Dto.CodyReturnDto;
 import swEngineeringTeam1.closetProject.Entity.ClothesEntity;
 import swEngineeringTeam1.closetProject.Entity.CodyEntity;
 import swEngineeringTeam1.closetProject.Entity.CodyId;
 import swEngineeringTeam1.closetProject.Entity.UserEntity;
+import swEngineeringTeam1.closetProject.Repository.ClothesRepository;
 import swEngineeringTeam1.closetProject.Repository.CodyRepository;
 import swEngineeringTeam1.closetProject.Repository.LoginRepository;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.FileInputStream;
@@ -36,6 +39,7 @@ public class CodyService {
     private final CodyRepository codyRepository;
     private final LoginRepository loginRepository;
     private final ServletContext servletContext;
+    private final ClothesRepository clothesRepository;
 
     public Map<String, Object> getAllCody (UserEntity user) throws IOException {
         Map<String,Object> response = new HashMap<>();
@@ -184,5 +188,26 @@ public class CodyService {
         System.out.println("외않되");
         return filePath+fileName; //url 리턴
     }
+
+    public Map<String, Object> getClothes (UserEntity user) {
+        List<ClothesEntity> allByUser = clothesRepository.findAllByUser(user);
+        Map<String,Object> response = new HashMap<>();
+        List<ClothesDto> dtos = new ArrayList<>();
+        if(allByUser.isEmpty()) {
+            response.put("success",true);
+            response.put("message","저장된 옷이 없습니다");
+        }
+        else {
+            response.put("success",true);
+            response.put("message","옷 가져오기에 성공했습니다");
+            for (ClothesEntity c : allByUser) {
+                dtos.add(new ClothesDto(c.getUser().getUserCode(),c.getClothesImage(),c.getSeason(),c.getColor(),c.getType(),c.getMaterial()));
+            }
+            response.put("clothes",dtos);
+        }
+        return response;
+    }
+
+
 
 }
