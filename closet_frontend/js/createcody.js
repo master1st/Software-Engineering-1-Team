@@ -4,59 +4,45 @@ const mycody_1 = document.querySelector('.mycody_1');
 const mycody_2 = document.querySelector('.mycody_2');
 const cody_update = document.querySelector('.cody_update');
 const section_right = document.querySelector('.cody_num');
-fetch("../test.json")
+const go_back = document.querySelector('.go_back');
+fetch("http://localhost:8080/mycody/?userCode="+localStorage.getItem('userCode'))
 .then(response => {
    return response.json();
 })
-
 .then(jsondata => {
   // jsondata.length 
   // jsondata[0].length
   j = jsondata;
   for(i=0; i<jsondata.codyList.length; i++)
   {
-    
-    const img = document.createElement('img');
+    console.log(jsondata.codyList)
+    const img = document.createElement('img');  
     img.setAttribute('class' , 'mycody_img');
     img.setAttribute('id' , jsondata.codyList[i][0].codyNum);
     img.setAttribute('src' , jsondata.codyList[i][0].codyImage);
     img.onclick= function() {
       img_detail(img);
     }
-    
-    if(i<5){
     mycody_1.appendChild(img);
-    } else {
-      mycody_2.appendChild(img);
-    }
+    
     
     for(j=0; j<jsondata.codyList[i].length; j++)
     {
-    // const img = document.createElement('img');
-    // img.setAttribute('class' , 'mycloset_img');
-    // img.setAttribute('id' , jsondata.codyList[i][j].clothesId);
-    // img.setAttribute('src' , jsondata.codyList[i][j].clothesImage);
-    // mycody_1.appendChild(img);
-    // console.log(img.id);
-    // 수정페이지에서 할것이 사진변경, 그리고 closet 올릴때, 사진 날씨정보나 그런것들 올리는 건데, 
-    // 그거 변경에 대한 페이지가 필요한데 처음 이미지를 만들때의 그 정보가 필요해.
-    // 사용자가 입력한 input들을 db 저장? 쌉가능 그냥 일반 div태그로 해서 query로 빼면되.
-    // ㅇㅋ 바로간다. 그럼 수정하기에서 필요한건 먼저 필요한 데이터들을 담는 text필드, 그리고 
-    // 삭제버튼과, 수정하기 버튼 ok 여기까지 하면 완벽 
-    // 그니까 사진을 누르면 동시에 수정하기 페이지가 보여지며, fetch를 보내야해 방법은 ? 
+   
     }
   }
 })
 // closet get 요청 "http://localhost:8080/mycloset/"
 const closet1 = document.querySelector('.closet1');
 const box = document.querySelector('.box');
-fetch("../test_post.json")
+fetch("http://localhost:8080/mycloset?userCode="+localStorage.getItem('userCode'))
 .then(response => {
    return response.json();
 })  
 .then(jsondata => {
-  console.log(jsondata.clothesList)
+  console.log(jsondata)
   jsondata.clothesList.map(item =>{
+    console.log(item);
     const img = document.createElement('img');
     img.setAttribute('class' , 'mycloset_img');
     img.setAttribute('id' , item.clothesId);
@@ -90,7 +76,7 @@ fetch("../test_post.json")
 window.onload=function codyClick(){
   const urlparam= new URL(location.href).searchParams;
   const codynum = urlparam.get('alt');
-  fetch("../test.json")
+  fetch(`http://localhost:8080/mycody/${codynum}?userCode=`+localStorage.getItem('userCode'))
 .then(response => {
    return response.json();
 })  
@@ -103,18 +89,115 @@ window.onload=function codyClick(){
   img.setAttribute('id' , jsondata.codyList[i][0].codyNum);
   img.setAttribute('src' , jsondata.codyList[i][0].codyImage);
   img.onclick= function() {
-    img_detail(img);
+    img_delete(img);
   }
-  
   cody_update.appendChild(img);
 }
 }
-  
+  go_back.addEventListener('click', () => {
+
+    const delurl=`http://localhost:8080/mycody?userCode=`+localStorage.getItem('userCode')+codynum;
+    console.log(delurl)
+    fetch(delurl, {
+        method: "DELETE",
+      }).then(response=>response.json())
+      .then(data=>{
+        console.log(data)
+        alert(data.message)})
+      .catch(error=>console.log(error));
 })
-  
+
+  })  
+}
+///////////////////////////
+function loadFile(input){
+
+  var file = input.files[0]
+
+  var newImage=document.createElement("img");
+  newImage.setAttribute("class",'img')
+
+  newImage.src = URL.createObjectURL(file);   
+
+  newImage.style.width = "70%";
+  newImage.style.height = "70%";
+  newImage.style.objectFit = "contain";
+
+  var container = document.getElementById('image-show');
+  container.appendChild(newImage);
+  console.log("이미지 삽입 성공")
+
+
+}   
+
+
+
+function addfile(){
+
+
+
+  const season=document.getElementById('season')
+  const type=document.getElementById('type')
+  const color=document.getElementById('color')
+  const material=document.getElementById('material')
+  const UploadPic=document.getElementById('UploadPic')
+  console.log(UploadPic)
+
+
+  const formdata= new FormData();
+  formdata.append('file',UploadPic.files[0])
+  formdata.append(
+    'jsonString',
+    JSON.stringify({
+      "clothesList": [
+        {
+            "clothesId": 1,
+            "clothesImage": "파일명.jpg",
+            "color": "red",
+            "material": "leather",
+            "type": "pants",
+            "season": "fall",
+            "userCode": localStorage.getItem('userCode')
+        },
+        {
+            "clothesId": 2,
+            "clothesImage": "image.jpg",
+            "color": "black",
+            "material": "material",
+            "type": "hat",
+            "season": "all",
+            "userCode": localStorage.getItem('userCode')
+        }
+    ]
+    })
+  )
+
+
+  console.log(UploadPic.files[0]);
+
+
+
+  fetch('http://localhost:8080/mycody/', {
+      method: "POST",
+      body: formdata
+    }).then((response) => response.json())
+    .then((data) => {
+      if(data.success==true) {
+        alert(data.message);
+      }
+      else{
+        alert(data.message);
+      }
+  }).catch(error => {
+    console.error(error)
+  })
+
+  console.log("fetch 요청은 성공")
+
 }
 
 
+//////////////////////////
 
 
 function img_detail(item){
@@ -125,17 +208,54 @@ function img_detail(item){
     img.setAttribute('id' , item.id);
     img.setAttribute('src' , item.src);
     img.setAttribute('alt', item.id);
-    // img.onclick= function() {
-    //   img_delete(img);
-    // }
+    img.onclick= function() {
+      img_delete(img);
+    }
     console.log(img);
-    mycody_2.append(img);
     location.href = 'http://127.0.0.1:5500/html/createcody.html?alt='+img.alt
   }
+  function addfile(){
+    const UploadPic=document.getElementById('UploadPic')
+    console.log(UploadPic)
 
+
+    const formdata= new FormData();
+    formdata.append('file',UploadPic.files[0])
+    formdata.append(
+      "jsonClothesDto",
+      JSON.stringify({
+          season: season.options[season.selectedIndex].value,
+          type:type.options[type.selectedIndex].value,
+          color:color.options[color.selectedIndex].value,
+          material: material.options[material.selectedIndex].value,
+      })
+    )
+    formdata.append('userCode',localStorage.getItem('userCode'))
+
+
+    console.log(UploadPic.files[0]);
+    console.log(localStorage.getItem('userCode'));
+
+
+
+    fetch('http://localhost:8080/mycloset/', {
+        method: "POST",
+        body: formdata
+      }).then((response) => response.json())
+      .then((data) => {
+        if(data.success==true) {
+          window.location = "http://127.0.0.1:5500/html/mycloset.html"}
+        else{
+          alert(data.message);
+        }
+    })
+
+    console.log("fetch 요청은 성공")
+
+}
 // cody Create 요청 
 var input = document.querySelector('input[type="file"]')
-
+console.log(input);
 var data = new FormData()
 data.append('file', input.files[0])
 data.append('jsonString', {
@@ -160,30 +280,8 @@ data.append('jsonString', {
       }
   ]
 })
-// data.append('jsonString', {
-//   "clothesList": [
-//       {
-//           "clothesId": 1,
-//           "clothesImage": "파일명.jpg",
-//           "color": "red",
-//           "material": "leather",
-//           "type": "pants",
-//           "season": "fall",
-//           "userCode": 1
-//       },
-//       {
-//           "clothesId": 2,
-//           "clothesImage": "image",
-//           "color": "black",
-//           "material": "material",
-//           "type": "hat",
-//           "season": "all",
-//           "userCode": 1
-//       }
-//   ]
-// })
 
-fetch('http://localhost:8080/mycody', {
+fetch('../yame.json', {
   method: 'POST',
 //   headers: {"Content-Type": "multipart/form-data"
 // },
@@ -226,23 +324,21 @@ fetch('http://localhost:8080/mycody', {
 // }
 
   //코디 Delete 삭제하기 요청 
-  function img_delete(delete_img){
-    cody_update.removeChild(delete_img);
-    fetch(`http://localhost:8080/mycody/${mycody_img.id}`, {
-    method: 'DELETE',
-  })
-  .then(response => {
-  return response.json();
-  })
-  .then(data => {
-    return data;
-    //이미지 클릭이 전제된 함수안에서, 클릭시에 fetch보내서 delete 보내고 
-    //appendchild.remove 인가 이것만 하면 실제 삭제가 된다. 
+    //삭제하기 버튼을 누르면
+//     fetch(`http://localhost:8080/mycody/${mycody_img.id}`, {
+//     method: 'DELETE',
+//   })
+//   .then(response => {
+//   return response.json();
+//   })
+//   .then(data => {
+//     return data;
+//     //이미지 클릭이 전제된 함수안에서, 클릭시에 fetch보내서 delete 보내고 
+//     //appendchild.remove 인가 이것만 하면 실제 삭제가 된다. 
     
     
-    location.href = "http://127.0.0.1:5500/html/createcody.html";
-})   
-};
+//     location.href = "http://127.0.0.1:5500/html/createcody.html";
+// })
 
 
 

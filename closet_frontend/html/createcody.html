@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="../css/mycody.css">
     <script src="https://kit.fontawesome.com/096073a2a8.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../css/createcody.css">
-    <script src="/js/mycody.js"></script>
     
     
 </head>
@@ -94,14 +93,36 @@
     <section class="section_center">
     <div class="section_center_top">
 
-        <form>
+        <span><input class="filter_add" type="submit" value="추가하기" onclick="addfile()"></span>
+        <span class="section_box">
+            <ul class="img_list">
+                <li>
+                    
+                    <p class="sub_explain">옷 미리보기</p>
+                </li>
+                <li>
+                    <span id="add">
+            
+                </span>
+                </li>
+            </ul>
+            <div class="button">
+                <label for="사진 업로드"></label>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                <input class="UploadPic" id="UploadPic" type="file" value="사진 업로드" accept="image/*" onchange="loadFile(this)">
+            </form>
+            <div class="image-show" id="image-show"></div>
+        </span>
+
+        <!-- <form>
             <div>
               <label>Select file to upload</label>
               <input type="file">
             </div>
             <button type="submit" style="width:90px;
             background-color: #FF28A7	;"><i class="fa-solid fa-check"></i><strong>저장</strong></button>
-          </form>
+          </form> -->
 
          <!-- <form method="post" enctype="multipart/form-data">
             <div>
@@ -138,6 +159,7 @@
         </ul>
     </footer>
     <script defer src="/js/createcody.js"></script>
+    <script src="/js/mycody.js"></script>
 </body>
 
 </html>

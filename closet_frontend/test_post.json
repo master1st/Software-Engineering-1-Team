@@ -2,7 +2,23 @@
     "success": true,
     "clothesList": [
         {
+            "clothesId": 1,
+            "clothesImage": "../img/코디3.png",
+            "season": "winter",
+            "color": "blue",
+            "type": "cap",
+            "material": "cotton"
+        },
+        {
             "clothesId": 2,
+            "clothesImage": "../img/코디3.png",
+            "season": "winter",
+            "color": "blue",
+            "type": "pants",
+            "material": "cotton"
+        },
+        {
+            "clothesId": 3,
             "clothesImage": "../img/코디3.png",
             "season": "winter",
             "color": "blue",
@@ -11,6 +27,70 @@
         },
         {
             "clothesId": 4,
+            "clothesImage": "../img/코디3.png",
+            "season": "winter",
+            "color": "blue",
+            "type": "pants",
+            "material": "cotton"
+        },
+        {
+            "clothesId": 5,
+            "clothesImage": "../img/코디3.png",
+            "season": "winter",
+            "color": "blue",
+            "type": "cap",
+            "material": "cotton"
+        },
+        {
+            "clothesId": 6,
+            "clothesImage": "../img/코디3.png",
+            "season": "winter",
+            "color": "blue",
+            "type": "pants",
+            "material": "cotton"
+        },
+        {
+            "clothesId": 7,
+            "clothesImage": "../img/코디3.png",
+            "season": "winter",
+            "color": "blue",
+            "type": "cap",
+            "material": "cotton"
+        },
+        {
+            "clothesId": 8,
+            "clothesImage": "../img/코디3.png",
+            "season": "winter",
+            "color": "blue",
+            "type": "pants",
+            "material": "cotton"
+        },
+        {
+            "clothesId": 9,
+            "clothesImage": "../img/코디3.png",
+            "season": "winter",
+            "color": "blue",
+            "type": "cap",
+            "material": "cotton"
+        },
+        {
+            "clothesId": 10,
+            "clothesImage": "../img/코디3.png",
+            "season": "winter",
+            "color": "blue",
+            "type": "pants",
+            "material": "cotton"
+        },
+        {
+            "clothesId": 11,
+            "clothesImage": "../img/코디3.png",
+            "season": "winter",
+            "color": "blue",
+            "type": "cap",
+            "material": "cotton"
+        },
+        {
+            "clothesId": 12,
             "clothesImage": "../img/코디3.png",
             "season": "winter",
             "color": "blue",

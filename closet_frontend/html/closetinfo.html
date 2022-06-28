@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../css/mycloset.css">
+    <link rel="stylesheet" href="../css/closetinfo.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"/>
 </head>
 
@@ -21,14 +21,13 @@
             <li class="item"><a class="cody_hyperlink" href="./mycloset.html">나의 옷장</a></li>
             <li class="item"><a class="cody_hyperlink" href="./mycody.html">나의 코디</a></li>
             <li class="item"><a class="cody_hyperlink" id= "login" onClick="loginout()">로그인</a></li>
-        </ul>
+            </ul>
         <div class="br_tag_box">
             <div class="br_tag"></div>
         </div>
     </nav>
-    <section>
+    <div class="main_section">
         <div class="section_top">
-            
             <form action="/action_page.php">
                 <label for="category">카테고리를 선택해주세요:</label>
                 <div class="top_box">
@@ -62,32 +61,47 @@
                                 <option value="rayon">레이온</option>
                             </select>
                         </ul>
-                        </div>
-                        
+
                     </span>
-                    <span><input class="filter_add" type="button" value="추가하기" onClick="location.href='createcloset.html'"></span>
                 </div>
             </form>
-            <span><input class="filter_add" type="button" value="검색" onclick="search()"></span>
         </div>
         <div class="section_box">
-            
             <ul class="img_list">
+                <li>
+                    
+                    <p class="sub_explain">등록된 옷 사진</p>
+                </li>
+                <li>
+                    <span id="add">
             
+                </span>
+                </li>
             </ul>
+            <div class="button">
+                <label for="사진 업로드"></label>
+            </div>
+            <div>
+                <form method="post" enctype="multipart/form-data">
+                    <input class="UploadPic" id="UploadPic" type="file" value="사진 업로드" accept="image/*" onchange="loadFile(this)">
+                </form>
+            </div>
+            <div class="image-show" id="image-show"></div>
+           
+                
         </div>
-
-    </section>
-    <div class="br_tag_box">
-        <div class="br_tagb"></div>
+        <div><button id="updateBtn" type="button" onclick="updatefile()">수정하기</div>
+        <div><button id="deleteBtn" type="button" onclick="deletefile()">삭제하기</div>
+        
     </div>
+        <div class="br_tagb"></div>
     <footer>
         <ul class="footer_items">
             <li class="f_item">회원탈퇴</li>
             <li class="f_item">about</li>
         </ul>
     </footer>
-    <script src="/js/mycloset.js"></script>
+    <script src="/js/closetinfo.js"></script>
 </body>
 
 </html>
